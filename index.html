@@ -1,42 +1,185 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>خدمة أبشر – بدون إنترنت</title>
 
-    <!-- تحويل تلقائي إلى abshr.html -->
-    <meta http-equiv="refresh" content="0; URL=abshr.html">
-
-    <title>Absher Offline Demo – تحويل</title>
+    <!-- الخط الرسمي المشابه لأبشر -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: Arial, Tahoma, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #0c7a3e;
+            padding: 20px;
+            color: #fff;
             text-align: center;
-            padding-top: 80px;
+            font-size: 26px;
+            font-weight: bold;
         }
-        .box {
-            display: inline-block;
-            padding: 25px 35px;
-            background: white;
+
+        .container {
+            max-width: 650px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px #cccccc65;
         }
-        h1 {
-            color: #007bff;
-            margin-bottom: 10px;
+
+        .status-bar {
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: center;
+            font-weight: 600;
         }
-        p {
-            font-size: 16px;
-            opacity: 0.8;
+
+        .online {
+            background-color: #e8f8ef;
+            color: #0c7a3e;
+            border: 1px solid #0c7a3e;
+        }
+
+        .offline {
+            background-color: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #b71c1c;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background-color: #0c7a3e;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0a6934;
+        }
+
+        .file-box {
+            border: 2px dashed #0c7a3e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            color: #0c7a3e;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
-    <div class="box">
-        <h1>جاري تحويلك…</h1>
-        <p>سيتم فتح النسخة التجريبية بعد لحظة.</p>
+
+    <div class="header">خدمة أبشر – تقديم طلب بدون إنترنت</div>
+
+    <div class="container">
+
+        <!-- حالة الاتصال -->
+        <div id="connectionStatus" class="status-bar online">✔ الاتصال ممتاز</div>
+
+        <!-- النموذج -->
+        <form id="absherForm">
+
+            <label>رقم الهوية / الإقامة</label>
+            <input type="text" id="nid" placeholder="أدخل رقم الهوية">
+
+            <label>نوع الخدمة المطلوبة</label>
+            <select id="serviceType">
+                <option value="">اختر الخدمة</option>
+                <option>تجديد الهوية</option>
+                <option>إصدار إقامة</option>
+                <option>نقل خدمات</option>
+                <option>تحديث العنوان الوطني</option>
+                <option>فتح بلاغ</option>
+                <option>الإبلاغ عن وثائق مفقودة</option>
+                <option>تفعيل الخدمات الإلكترونية</option>
+            </select>
+
+            <label>ملاحظات إضافية</label>
+            <textarea id="notes" placeholder="اكتب تفاصيل إضافية (اختياري)"></textarea>
+
+            <label>رفع صورة الهوية</label>
+            <div class="file-box" onclick="document.getElementById('idUpload').click();">
+                اضغط لرفع صورة الهوية
+            </div>
+            <input type="file" id="idUpload" accept="image/*" style="display:none">
+
+            <button type="submit">إرسال الطلب</button>
+
+        </form>
     </div>
+
+    <script>
+        // فحص الاتصال
+        function checkConnection() {
+            if (navigator.onLine) {
+                connectionStatus.className = "status-bar online";
+                connectionStatus.innerHTML = "✔ الاتصال ممتاز";
+            } else {
+                connectionStatus.className = "status-bar offline";
+                connectionStatus.innerHTML = "⚠ لا يوجد اتصال – سيتم حفظ الطلب محليًا";
+            }
+        }
+
+        setInterval(checkConnection, 2000);
+        checkConnection();
+
+        // تخزين الطلب عند عدم وجود إنترنت
+        document.getElementById("absherForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const data = {
+                nid: nid.value,
+                service: serviceType.value,
+                notes: notes.value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            if (!navigator.onLine) {
+                localStorage.setItem("offlineRequest", JSON.stringify(data));
+                alert("تم حفظ الطلب محليًا بسبب عدم وجود اتصال.");
+            } else {
+                alert("✔ تم إرسال الطلب بنجاح!");
+            }
+        });
+    </script>
+
 </body>
 </html>
