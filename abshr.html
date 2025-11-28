@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أبشر – الهوية بدون إنترنت</title>
+
+    <style>
+        body {
+            font-family: "Tahoma";
+            background: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0a4a92;
+        }
+
+        label {
+            margin-top: 12px;
+            display: block;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+        }
+
+        .upload-box {
+            padding: 15px;
+            background: #eaf2ff;
+            border: 2px dashed #0a62d0;
+            text-align: center;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #0a4a92;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        #connection-status {
+            text-align: center;
+            font-weight: bold;
+            color: green;
+        }
+
+        #alert-box {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ffca2c;
+            color: #8a6d3b;
+            display: none;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>أبشر – نموذج الهوية بدون إنترنت</h2>
+
+    <div id="connection-status">جاري فحص الاتصال...</div>
+    <div id="alert-box">⚠️ الاتصال ضعيف — تم تفعيل الحفظ التلقائي</div>
+
+    <label>رقم الهوية</label>
+    <input type="text" id="idNumber">
+
+    <label>نوع الخدمة</label>
+    <select id="serviceType">
+        <option>تجديد جواز</option>
+        <option>إصدار إقامة</option>
+        <option>نقل معلومات</option>
+        <option>تجديد رخصة قيادة</option>
+        <option>العنوان الوطني</option>
+        <option>المخالفات</option>
+        <option>بلاغات</option>
+        <option>التفويض الإلكتروني</option>
+    </select>
+
+    <label>ملاحظات</label>
+    <textarea id="notes" rows="4"></textarea>
+
+    <label>صورة الهوية</label>
+    <div class="upload-box">
+        <input type="file" id="idImage" accept="image/*">
+    </div>
+
+    <button onclick="submitForm()">إرسال الطلب</button>
+
+</div>
+
+<script>
+/* ============================================
+   🟩 إنشاء قاعدة بيانات IndexedDB
+============================================ */
+
+let db;
+const request = indexedDB.open("AbsherOfflineDB", 1);
+
+request.onupgradeneeded = (event) => {
+    db = event.target.result;
+    db.createObjectStore("draft", { keyPath: "id" });
+};
+
+request.onsuccess = (event) => {
+    db = event.target.result;
+    console.log("IndexedDB جاهز");
+    loadDraft();
+};
+
+request.onerror = () => console.log("خطأ في IndexedDB");
+
+/* ============================================
+   🟩 حفظ البيانات تلقائيًا
+============================================ */
+
+function saveDraft() {
+    const tx = db.transaction("draft", "readwrite");
+    const store = tx.objectStore("draft");
+
+    const fileInput = document.getElementById("idImage").files[0];
+
+    if (fileInput) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const draft = {
+                id: 1,
+                idNumber: idNumber.value,
+                serviceType: serviceType.value,
+                notes: notes.value,
+                image: e.target.result
+            };
+            store.put(draft);
+        };
+        reader.readAsDataURL(fileInput);
+    } else {
+        const draft = {
+            id: 1,
+            idNumber: idNumber.value,
+            serviceType: serviceType.value,
+            notes: notes.value,
+            image: null
+        };
+        store.put(draft);
+    }
+}
+
+/* حفظ عند كل تغيير */
+document.querySelectorAll("input, select, textarea")
+    .forEach(el => el.addEventListener("input", saveDraft));
+
+/* ============================================
+   🟩 تحميل المسودة تلقائيًا عند الدخول
+============================================ */
+
+function loadDraft() {
+    const tx = db.transaction("draft", "readonly");
+    const store = tx.objectStore("draft");
+
+    const req = store.get(1);
+
+    req.onsuccess = (e) => {
+        const data = e.target.result;
+        if (!data) return;
+
+        idNumber.value = data.idNumber || "";
+        serviceType.value = data.serviceType || "";
+        notes.value = data.notes || "";
+
+        if (data.image) {
+            console.log("✔ صورة الهوية محمّلة من المسودة");
+        }
+    };
+}
+
+/* ============================================
+   🟩 فحص الاتصال (تنبؤ الانقطاع)
+============================================ */
+
+let fails = 0;
+
+async function checkConnection() {
+    try {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 2000);
+
+        await fetch("https://jsonplaceholder.typicode.com/todos/1", {
+            signal: controller.signal
+        });
+
+        document.getElementById("connection-status").innerHTML = "✔ الإنترنت ممتاز";
+        document.getElementById("connection-status").style.color = "green";
+        document.getElementById("alert-box").style.display = "none";
+        fails = 0;
+
+    } catch {
+        fails++;
+        document.getElementById("connection-status").innerHTML = "❌ انقطاع الاتصال...";
+        document.getElementById("connection-status").style.color = "red";
+
+        if (fails >= 2) {
+            document.getElementById("alert-box").style.display = "block";
+            saveDraft();
+        }
+    }
+}
+
+checkConnection();
+setInterval(checkConnection, 5000);
+
+/* ============================================
+   🟩 إرسال الطلب
+============================================ */
+
+function submitForm() {
+    if (document.getElementById("alert-box").style.display === "block") {
+        alert("⚠️ الإرسال مرفوض بسبب ضعف الاتصال.\nتم حفظ البيانات محليًا.");
+        return;
+    }
+
+    alert("✔ تم إرسال الطلب بنجاح (عرض تجريبي فقط)");
+}
+</script>
+
+</body>
+</html>
