@@ -1,0 +1,56 @@
+// ...
+/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */
+{alertVisible && (
+    <div className="alert">
+        <span className="alert-close" onClick={closeAlert}>&times;</span>
+        ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
+    </div>
+)}
+
+<form onSubmit={submitForm}>
+
+    {/* رقم الهوية */}
+    <label htmlFor="idNumber">🆔 رقم الهوية</label>
+    {/* ... حقل الإدخال ... */}
+
+    {/* رفع الهوية الأمامية */}
+    <label>🖼️ صورة الهوية (الأمامية)</label>
+    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
+    {idFrontPreview && (
+        <div className="id-preview-container">
+            <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
+        </div>
+    )}
+
+    {/* رفع الهوية الخلفية */}
+    <label>🖼️ صورة الهوية (الخلفية)</label>
+    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
+    {idBackPreview && (
+        <div className="id-preview-container">
+            <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
+        </div>
+    )}
+
+    {/* خدمات أبشر */}
+    <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
+    {/* ... حقل الاختيار ... */}
+
+    {/* ملاحظات */}
+    <label htmlFor="notes">📝 ملاحظات إضافية</label>
+    {/* ... حقل النص ... */}
+
+    {/* أزرار الإجراءات - تم إضافة أيقونات */}
+    <button className="btn" type="submit" disabled={isChecking}>
+        {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
+    </button>
+    
+    <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
+        <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
+            💾 حفظ مسودة يدوياً
+        </button>
+        <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
+            🗑️ مسح المسودة
+        </button>
+    </div>
+</form>
+// ...
