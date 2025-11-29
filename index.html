@@ -46,18 +46,11 @@
             height: 70px;
             background-color: var(--absher-green);
             border-radius: 50%;
-            /* محاكاة للشعار الحقيقي */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             color: white;
-        }
-        
-        .top-links {
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
         
         .top-links .link-item {
@@ -68,18 +61,7 @@
             font-weight: bold;
             display: flex;
             align-items: center;
-        }
-
-        .top-links .link-item i {
-            margin-left: 8px;
-            font-size: 16px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            cursor: pointer;
         }
         
         .profile-pic {
@@ -89,9 +71,7 @@
             border-radius: 50%;
         }
         .profile-pic i {
-             color: white;
-             line-height: 40px;
-             font-size: 20px;
+             color: white; line-height: 40px; font-size: 20px;
         }
 
         /* INNER NAVIGATION (شريط التنقل الفرعي) */
@@ -102,77 +82,37 @@
         }
         
         .innerpage-navigation .nav-list {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 20px;
+            display: flex; list-style: none; margin: 0; padding: 0; gap: 20px;
         }
 
         .innerpage-navigation .nav-item a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 0;
-            display: block;
-            font-weight: 500;
-        }
-
-        .innerpage-navigation .nav-item.active {
-            border-bottom: 4px solid #fff;
+            color: white; text-decoration: none; padding: 15px 0; display: block; font-weight: 500;
         }
 
         /* MAIN LAYOUT */
-        .main-content-wrapper {
-            padding: 20px 30px;
-        }
+        .main-content-wrapper { padding: 20px 30px; }
         .content-flex {
-            display: flex;
-            flex-direction: row-reverse;
-            gap: 20px;
-            max-width: 1300px;
-            margin: auto;
+            display: flex; flex-direction: row-reverse; gap: 20px; max-width: 1300px; margin: auto;
         }
         .sidebar-right {
-            width: 250px;
-            flex-shrink: 0;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px 0;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            min-height: 300px;
+            width: 250px; flex-shrink: 0; background-color: white; border-radius: 8px; padding: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05); min-height: 300px;
         }
         
         /* SIDEBAR ITEMS */
-        .sidebar-right ul {
-            list-style: none;
-            padding: 0;
-        }
+        .sidebar-right ul { list-style: none; padding: 0; }
         .sidebar-right li {
-            padding: 12px 20px;
-            cursor: pointer;
-            color: var(--absher-text);
-            font-weight: 500;
+            padding: 12px 20px; cursor: pointer; color: var(--absher-text); font-weight: 500;
         }
         .sidebar-right li:hover, .sidebar-right li.active {
-            background-color: var(--absher-light-green);
-            color: var(--absher-green);
-            border-right: 4px solid var(--absher-green);
+            background-color: var(--absher-light-green); color: var(--absher-green); border-right: 4px solid var(--absher-green);
         }
-        .sidebar-right i {
-            margin-left: 10px;
-            color: var(--absher-green);
-        }
+        .sidebar-right i { margin-left: 10px; color: var(--absher-green); }
 
         /* SEARCH BAR */
         .search-row { margin-bottom: 30px; }
         .search-box {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            background-color: white;
-            box-sizing: border-box;
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; background-color: white; box-sizing: border-box;
         }
         
         /* SERVICES GRID */
@@ -183,80 +123,35 @@
         }
         
         .service-card {
-            text-align: center;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 30px 10px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: box-shadow 0.2s, transform 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
+            text-align: center; border: 1px solid #eee; border-radius: 10px; padding: 30px 10px; background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: box-shadow 0.2s, transform 0.2s; cursor: pointer;
+            text-decoration: none; color: inherit; display: block; /* لجعل البطاقة قابلة للنقر بالكامل */
         }
         .service-card:hover {
-            box-shadow: 0 4px 10px rgba(0, 137, 64, 0.2);
-            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 137, 64, 0.2); transform: translateY(-5px);
         }
         .service-card-icon {
-            border: 1px solid var(--absher-light-green);
-            border-radius: 50%;
-            padding: 20px;
-            background-color: var(--absher-light-green);
-            display: inline-block;
-            margin-bottom: 15px;
+            border: 1px solid var(--absher-light-green); border-radius: 50%; padding: 20px; background-color: var(--absher-light-green);
+            display: inline-block; margin-bottom: 15px;
         }
-        .service-card-icon i {
-            font-size: 30px;
-            color: var(--absher-green);
-            margin: 0;
-        }
-        .service-card span {
-            display: block;
-            font-weight: bold;
-            color: var(--absher-text);
-        }
+        .service-card-icon i { font-size: 30px; color: var(--absher-green); margin: 0; }
+        .service-card span { display: block; font-weight: bold; color: var(--absher-text); }
         
         /* ======================= */
-        /* تنسيقات نموذج AbsherForm (مدمجة من الكود السابق) */
+        /* تنسيقات نموذج AbsherForm */
         /* ======================= */
         .form-container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        .form-container h1 {
-            color: var(--absher-dark-green);
-            font-size: 24px;
-            margin-bottom: 25px;
-        }
+        .form-container h1 { color: var(--absher-dark-green); font-size: 24px; margin-bottom: 25px; text-align: center; }
 
         .input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            box-sizing: border-box;
+            width: 100%; padding: 12px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box;
         }
         .btn {
-            background-color: var(--absher-primary-blue);
-            color: white;
-            padding: 15px;
-            border: none;
-            font-size: 18px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: background-color 0.3s;
+            background-color: var(--absher-primary-blue); color: white; padding: 15px; border: none; font-size: 18px; width: 100%; cursor: pointer; border-radius: 6px; transition: background-color 0.3s;
         }
         .btn:hover:not(:disabled) { background-color: #003e7a; }
-        .btn:disabled, .btn-secondary:disabled, .btn-danger:disabled {
-            cursor: not-allowed; opacity: 0.6;
-        }
         .btn-secondary, .btn-danger {
             padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; flex-grow: 1; 
         }
@@ -281,6 +176,10 @@
         .id-preview-container { border: 1px solid #ddd; border-radius: 6px; padding: 10px; margin-top: 10px; margin-bottom: 25px; display: inline-block; }
         .id-preview { width: 100%; max-width: 200px; height: auto; display: block; }
         label { display: block; margin-bottom: 5px; margin-top: 10px; font-weight: bold; color: #333; }
+        
+        .back-to-dashboard {
+            background: none; border: none; color: var(--absher-green); text-decoration: underline; cursor: pointer; font-size: 14px; margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -291,9 +190,7 @@
         </div>
         
         <div class="top-links">
-            <a href="#" class="link-item"><i class="fas fa-arrow-left"></i> تسجيل الخروج</a>
-            <a href="#" class="link-item"><i class="fas fa-language"></i> English</a>
-            <a href="#" class="link-item"><i class="fas fa-bell"></i> الاشعارات</a>
+            <a href="#" class="link-item" onclick="alert('تم محاكاة تسجيل الخروج بنجاح!'); return false;"><i class="fas fa-arrow-left"></i> تسجيل الخروج</a>
         </div>
 
         <div class="user-profile">
@@ -335,7 +232,9 @@
                 </div>
 
                 <div id="root-absher-form" style="display: none;">
+                    <button class="back-to-dashboard" onclick="showDashboard()"><i class="fas fa-arrow-right"></i> العودة إلى الخدمات الرئيسية</button>
                     <div class="form-container">
+                         <h1></h1>
                         <div id="form-root"></div>
                     </div>
                 </div>
@@ -343,32 +242,32 @@
                 <div id="root-dashboard">
                     <div class="services-grid">
                         
-                        <a class="service-card" href="#" onclick="showForm('مواعيد'); return false;">
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
                             <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
                             <span>مواعيد</span>
                         </a>
                         
-                        <a class="service-card" href="#" onclick="showForm('العمالة'); return false;">
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة العمالة'); return false;">
                             <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
                             <span>العمالة</span>
                         </a>
                         
-                        <a class="service-card" href="#" onclick="showForm('أفراد الأسرة'); return false;">
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة أفراد الأسرة'); return false;">
                             <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
                             <span>أفراد الأسرة</span>
                         </a>
                         
                         <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
                             <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
-                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (ديمو)</span>
+                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (MVP)</span>
                         </a>
                         
-                        <a class="service-card" href="#" onclick="showForm('المركبات'); return false;">
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المركبات'); return false;">
                             <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
                             <span>المركبات</span>
                         </a>
 
-                        <a class="service-card" href="#" onclick="showForm('خدماتي'); return false;">
+                        <a class="service-card" href="#" onclick="showForm('نموذج الخدمات العامة'); return false;">
                             <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
                             <span>خدماتي</span>
                         </a>
@@ -381,25 +280,32 @@
     </div>
     
     <script>
+        function showDashboard() {
+            // إخفاء منطقة النموذج
+            document.getElementById('root-absher-form').style.display = 'none';
+            // إظهار لوحة التحكم
+            document.getElementById('root-dashboard').style.display = 'grid';
+        }
+        
         function showForm(serviceName) {
             // إخفاء لوحة التحكم
             document.getElementById('root-dashboard').style.display = 'none';
             // إظهار منطقة النموذج
             document.getElementById('root-absher-form').style.display = 'block';
 
-            // يجدد محتوى الـ H1 ليطابق الخدمة التي تم النقر عليها
-            const formContainer = document.querySelector('.form-container');
-            
             // تحديث العنوان داخل النموذج
-            const currentTitle = document.querySelector('.form-container h1');
-            if (currentTitle) {
-                 currentTitle.textContent = serviceName;
-            } else {
-                 formContainer.innerHTML = `<h1>${serviceName}</h1><div id="form-root"></div>`;
+            const formContainer = document.querySelector('.form-container');
+            let h1Element = formContainer.querySelector('h1');
+            let formRoot = formContainer.querySelector('#form-root');
+
+            if (!h1Element) {
+                h1Element = document.createElement('h1');
+                formContainer.insertBefore(h1Element, formRoot);
             }
+            h1Element.textContent = serviceName;
 
             // يعيد تشغيل نموذج React
-            ReactDOM.createRoot(document.getElementById("form-root")).render(<AbsherForm />);
+            ReactDOM.createRoot(formRoot).render(<AbsherForm />);
         }
         
         // عند التحميل الأول، نعرض لوحة التحكم
@@ -430,6 +336,7 @@ function AbsherForm() {
         try {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 2500); 
+            // نستخدم API ثابتة لاختبار الاتصال
             await fetch("https://jsonplaceholder.typicode.com/posts/1", { signal: controller.signal });
             clearTimeout(timeout);
             const ping = Date.now() - start;
@@ -494,7 +401,7 @@ function AbsherForm() {
         }
     };
 
-    // [منطق الإرسال]
+    // [منطق الإرسال - مع التحقق من رقم الهوية]
     const submitForm = (e) => {
         e.preventDefault();
         
@@ -502,12 +409,14 @@ function AbsherForm() {
         if (idNumber.length !== 10) { alert("خطأ: يجب أن يتكون رقم الهوية من 10 خانات."); return; }
         if (!/^\d+$/.test(idNumber)) { alert("خطأ: يجب أن يحتوي رقم الهوية على أرقام فقط، ولا يقبل حروف أو رموز."); return; }
         
+        // منطق الوضع الآمن
         if (alertVisible && failCount >= 3) {
             saveDraft(); 
             alert("الاتصال ضعيف جداً! تم حفظ بياناتك (المسودة). سيتم نقلك لتأكيد الإرسال والحصول على رقم فاتورة سداد لاحقاً.");
             return;
         }
         
+        // الإرسال الناجح
         localStorage.removeItem("absher_draft");
         alert(`تم إرسال الطلب بنجاح لرقم الهوية: ${idNumber} في الوضع الطبيعي.`);
     };
@@ -539,88 +448,3 @@ function AbsherForm() {
 
             {/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */}
             {alertVisible && (
-                <div className="alert">
-                    <span className="alert-close" onClick={closeAlert}>&times;</span>
-                    ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
-                </div>
-            )}
-
-            <form onSubmit={submitForm}>
-
-                <label htmlFor="idNumber">🆔 رقم الهوية / الإقامة</label>
-                <input 
-                    id="idNumber" 
-                    className="input" 
-                    type="tel"
-                    inputMode="numeric"
-                    maxLength="10"
-                    placeholder="أدخل رقم الهوية"
-                    value={idNumber} 
-                    onChange={(e) => setIdNumber(e.target.value)}
-                    required 
-                />
-
-                <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
-                <select 
-                    id="service" 
-                    className="input" 
-                    value={service}
-                    onChange={(e) => setService(e.target.value)}
-                >
-                    <option value="">اختر الخدمة</option>
-                    <option>تجديد الهوية الوطنية</option>
-                    <option>تجديد جواز السفر</option>
-                    <option>إصدار الإقامة</option>
-                    <option>نقل ملكية مركبة</option>
-                </select>
-
-                <label htmlFor="notes">📝 ملاحظات إضافية</label>
-                <textarea 
-                    id="notes" 
-                    rows="4" 
-                    className="input"
-                    placeholder="اكتب تفاصيل إضافية (اختياري)"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                ></textarea>
-                
-                
-                <label>⬆️ رفع صورة الهوية (الأمامية)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
-                {idFrontPreview && (
-                    <div className="id-preview-container">
-                        <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
-                    </div>
-                )}
-
-                <label>⬆️ رفع صورة الهوية (الخلفية)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
-                {idBackPreview && (
-                    <div className="id-preview-container">
-                        <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
-                    </div>
-                )}
-                
-
-                <button className="btn" type="submit" disabled={isChecking}>
-                    {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
-                </button>
-                
-                <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
-                    <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
-                        💾 حفظ مسودة يدوياً
-                    </button>
-                    <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
-                        🗑️ مسح المسودة
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-// الكود يبدأ بدون عرض النموذج، وينتظر النقر على أيقونة الخدمة
-//ReactDOM.createRoot(document.getElementById("form-root")).render(null); 
-</script>
-</body>
-</html>
