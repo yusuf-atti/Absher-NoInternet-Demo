@@ -1,256 +1,11 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أبشر - الحضور الدائم</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- شاشة تسجيل الدخول -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-container">
-            <div class="login-header">
-                <h1>أبشر</h1>
-                <p class="tagline">الحضور الدائم</p>
+<div class="search-autocomplete">
+    <div id="customAutocomplete-table">
+        <div class="input-group"> 
+            <div class="input-group-addon">
+                <i class="icon-search"></i> 
+                <span class="hidden-xs">بحث</span>
             </div>
-            
-            <div class="login-form">
-                <h2>تسجيل الدخول</h2>
-                <div class="form-group">
-                    <label for="loginId">رقم الهوية / الإقامة</label>
-                    <input type="text" id="loginId" class="form-control" placeholder="ادخل رقم الهوية" value="1234567890">
-                </div>
-                <div class="form-group">
-                    <label for="loginMobile">رقم الجوال</label>
-                    <input type="text" id="loginMobile" class="form-control" placeholder="ادخل رقم الجوال" value="0500666723">
-                </div>
-                <button id="loginBtn" class="btn btn-primary btn-block">
-                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-                </button>
-                
-                <div class="demo-notes">
-                    <h4>بيانات تجريبية:</h4>
-                    <p><strong>الاسم:</strong> يوسف عاتي</p>
-                    <p><strong>الهوية:</strong> 1234567890</p>
-                    <p><strong>الجوال:</strong> 0500666723</p>
-                </div>
-            </div>
-        </div>
+            <input class="form-control input-lg" id="myInput" type="text" placeholder="اكتب هنا للبحث">
+        </div> 
     </div>
-
-    <!-- التطبيق الرئيسي (مخفي حتى تسجيل الدخول) -->
-    <div id="mainApp" class="main-app hidden">
-        <!-- شريط حالة الاتصال -->
-        <div id="connectionStatus" class="connection-status online">
-            <div class="status-content">
-                <span class="status-icon">🟢</span>
-                <span class="status-text">متصل بالإنترنت</span>
-                <div class="user-welcome">
-                    مرحباً، <span id="userName">يوسف عاتي</span>
-                </div>
-                <div class="status-actions">
-                    <button id="simulateOffline" class="btn btn-outline">محاكاة قطع الاتصال</button>
-                    <button id="simulateOnline" class="btn btn-outline" style="display: none;">محاكاة إعادة الاتصال</button>
-                    <button id="logoutBtn" class="btn btn-outline">تسجيل الخروج</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- شريط التنبيه الاستباقي -->
-        <div id="predictionAlert" class="prediction-alert hidden">
-            <div class="alert-content">
-                <div class="alert-icon">⚠️</div>
-                <div class="alert-text">
-                    <strong>الاتصال غير مستقر!</strong>
-                    <p>يبدو أن اتصالك بالإنترنت ضعيف. حمّل النسخة الآمنة الآن للمواصلة بدون إنترنت.</p>
-                </div>
-                <div class="alert-actions">
-                    <button id="downloadSafeMode" class="btn btn-primary">
-                        <i class="fas fa-shield-alt"></i> تحميل النسخة الآمنة
-                    </button>
-                    <button id="dismissAlert" class="btn btn-secondary">تجاهل</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- الوضع الآمن -->
-        <div id="offlineMode" class="offline-mode hidden">
-            <div class="offline-header">
-                <div class="offline-indicator">
-                    <span class="status-dot"></span>
-                    <span>وضع العمل الآمن</span>
-                </div>
-                <div class="offline-timer">
-                    ⏳ متبقي: <span id="offlineTimer">05:00</span>
-                </div>
-                <button id="exitOffline" class="btn btn-outline">خروج</button>
-            </div>
-        </div>
-
-        <!-- المحتوى الرئيسي -->
-        <header class="main-header">
-            <div class="container">
-                <div class="header-content">
-                    <div class="logo">
-                        <h1>أبشر</h1>
-                        <span class="tagline">الحضور الدائم</span>
-                    </div>
-                    <nav class="main-nav">
-                        <a href="#" class="nav-item active">الرئيسية</a>
-                        <a href="#" class="nav-item">الخدمات الإلكترونية</a>
-                        <a href="#" class="nav-item">التفاويض</a>
-                        <a href="#" class="nav-item">المدفوعات</a>
-                    </nav>
-                    <div class="user-menu">
-                        <div class="user-info">
-                            <span class="user-name" id="headerUserName">يوسف عاتي</span>
-                            <span class="user-id" id="headerUserId">1234567890</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div class="container">
-                <!-- معلومات المستخدم -->
-                <section class="user-profile-section">
-                    <div class="profile-card">
-                        <div class="profile-header">
-                            <div class="profile-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="profile-info">
-                                <h2 id="profileName">يوسف عاتي</h2>
-                                <p class="profile-id">الهوية الوطنية: <span id="profileId">1234567890</span></p>
-                            </div>
-                        </div>
-                        <div class="profile-details">
-                            <div class="detail-item">
-                                <span class="detail-label">تاريخ الميلاد:</span>
-                                <span class="detail-value" id="profileBirthDate">1447/12/01</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">مكان الميلاد:</span>
-                                <span class="detail-value" id="profileBirthPlace">جازان</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">رقم الجوال:</span>
-                                <span class="detail-value" id="profileMobile">0500666723</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">الحالة:</span>
-                                <span class="detail-value status-active" id="profileStatus">نشط</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- خدمات أبشر -->
-                <section class="services-section">
-                    <h2 class="section-title">الخدمات الإلكترونية</h2>
-                    
-                    <div class="services-grid">
-                        <!-- خدمة المخالفات المرورية -->
-                        <div class="service-card" data-service="traffic">
-                            <div class="service-icon">
-                                <i class="fas fa-car"></i>
-                            </div>
-                            <h3>تمديد مهلة سداد المخالفات</h3>
-                            <p>تمديد مهلة سداد المخالفات المرورية بدون رسوم</p>
-                            <button class="btn btn-service" onclick="openService('traffic')">
-                                استخدام الخدمة
-                            </button>
-                        </div>
-
-                        <!-- خدمة تجديد الجواز -->
-                        <div class="service-card" data-service="passport">
-                            <div class="service-icon">
-                                <i class="fas fa-passport"></i>
-                            </div>
-                            <h3>تجديد جواز السفر</h3>
-                            <p>تجديد جواز السفر مع سداد الرسوم عبر سداد</p>
-                            <button class="btn btn-service" onclick="openService('passport')">
-                                استخدام الخدمة
-                            </button>
-                        </div>
-
-                        <!-- خدمة الإقامة -->
-                        <div class="service-card" data-service="iqama">
-                            <div class="service-icon">
-                                <i class="fas fa-id-card"></i>
-                            </div>
-                            <h3>تجديد الإقامة</h3>
-                            <p>تجديد إقامة العمالة المنزلية</p>
-                            <button class="btn btn-service" onclick="openService('iqama')">
-                                استخدام الخدمة
-                            </button>
-                        </div>
-
-                        <!-- خدمة البيانات الشخصية -->
-                        <div class="service-card" data-service="profile">
-                            <div class="service-icon">
-                                <i class="fas fa-user-edit"></i>
-                            </div>
-                            <h3>تعديل البيانات الشخصية</h3>
-                            <p>تحديث المعلومات الشخصية والاتصال</p>
-                            <button class="btn btn-service" onclick="openService('profile')">
-                                استخدام الخدمة
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- إحصائيات النظام -->
-                <section class="stats-section">
-                    <h3 class="section-subtitle">إحصائيات استخدامك</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number" id="savedRequests">0</div>
-                            <div class="stat-label">طلب محفوظ</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="successfulSyncs">0</div>
-                            <div class="stat-label">مزامنة ناجحة</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="offlineTime">0</div>
-                            <div class="stat-label">دقيقة عمل آمن</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="totalServices">4</div>
-                            <div class="stat-label">خدمة متاحة</div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- نموذج الخدمة -->
-        <div id="serviceModal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modalTitle">الخدمة</h3>
-                    <button class="modal-close" onclick="closeService()">×</button>
-                </div>
-                <div class="modal-body">
-                    <div id="serviceForm">
-                        <!-- سيتم تحميل النموذج هنا ديناميكياً -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="submitService" class="btn btn-primary">تأكيد وحفظ</button>
-                    <button class="btn btn-secondary" onclick="closeService()">إلغاء</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- إشعارات -->
-        <div id="notifications" class="notifications"></div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+</div>
