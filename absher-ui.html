@@ -3,624 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاكاة لوحة تحكم أبشر - ديمو الوضع الآمن</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-
-    <style>
-        /* ======================= */
-        /* التنسيقات الأساسية والمتغيرات */
-        /* ======================= */
-        :root {
-            --absher-green: #008940; 
-            --absher-dark-green: #0b5aa2;
-            --absher-light-green: #e9f5ee; 
-            --absher-gray: #f7f7f7; 
-            --absher-text: #333;
-            --absher-primary-blue: #004b91;
-        }
-
-        body {
-            font-family: "Tahoma", sans-serif;
-            margin: 0;
-            background-color: var(--absher-gray);
-            color: var(--absher-text);
-        }
-        
-        /* HEADER (الشريط العلوي) */
-        .main-header {
-            background-color: white;
-            padding: 10px 30px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-absher {
-            width: 70px;
-            height: 70px;
-            background-color: var(--absher-green);
-            border-radius: 50%;
-            /* محاكاة للشعار الحقيقي */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: white;
-        }
-        
-        .top-links {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .top-links .link-item {
-            color: var(--absher-green);
-            text-decoration: none;
-            padding: 8px 10px;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        .top-links .link-item i {
-            margin-left: 8px;
-            font-size: 16px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            background-color: var(--absher-dark-green);
-            border-radius: 50%;
-        }
-        .profile-pic i {
-             color: white;
-             line-height: 40px;
-             font-size: 20px;
-        }
-
-        /* INNER NAVIGATION (شريط التنقل الفرعي) */
-        .innerpage-navigation {
-            background-color: var(--absher-green);
-            color: white;
-            padding: 0 30px;
-        }
-        
-        .innerpage-navigation .nav-list {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 20px;
-        }
-
-        .innerpage-navigation .nav-item a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 0;
-            display: block;
-            font-weight: 500;
-        }
-
-        .innerpage-navigation .nav-item.active {
-            border-bottom: 4px solid #fff;
-        }
-
-        /* MAIN LAYOUT */
-        .main-content-wrapper {
-            padding: 20px 30px;
-        }
-        .content-flex {
-            display: flex;
-            flex-direction: row-reverse;
-            gap: 20px;
-            max-width: 1300px;
-            margin: auto;
-        }
-        .sidebar-right {
-            width: 250px;
-            flex-shrink: 0;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px 0;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            min-height: 300px;
-        }
-        
-        /* SIDEBAR ITEMS */
-        .sidebar-right ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar-right li {
-            padding: 12px 20px;
-            cursor: pointer;
-            color: var(--absher-text);
-            font-weight: 500;
-        }
-        .sidebar-right li:hover, .sidebar-right li.active {
-            background-color: var(--absher-light-green);
-            color: var(--absher-green);
-            border-right: 4px solid var(--absher-green);
-        }
-        .sidebar-right i {
-            margin-left: 10px;
-            color: var(--absher-green);
-        }
-
-        /* SEARCH BAR */
-        .search-row { margin-bottom: 30px; }
-        .search-box {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            background-color: white;
-            box-sizing: border-box;
-        }
-        
-        /* SERVICES GRID */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
-        
-        .service-card {
-            text-align: center;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 30px 10px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: box-shadow 0.2s, transform 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-        .service-card:hover {
-            box-shadow: 0 4px 10px rgba(0, 137, 64, 0.2);
-            transform: translateY(-5px);
-        }
-        .service-card-icon {
-            border: 1px solid var(--absher-light-green);
-            border-radius: 50%;
-            padding: 20px;
-            background-color: var(--absher-light-green);
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-        .service-card-icon i {
-            font-size: 30px;
-            color: var(--absher-green);
-            margin: 0;
-        }
-        .service-card span {
-            display: block;
-            font-weight: bold;
-            color: var(--absher-text);
-        }
-        
-        /* ======================= */
-        /* تنسيقات نموذج AbsherForm (مدمجة من الكود السابق) */
-        /* ======================= */
-        .form-container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        .form-container h1 {
-            color: var(--absher-dark-green);
-            font-size: 24px;
-            margin-bottom: 25px;
-        }
-
-        .input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .btn {
-            background-color: var(--absher-primary-blue);
-            color: white;
-            padding: 15px;
-            border: none;
-            font-size: 18px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: background-color 0.3s;
-        }
-        .btn:hover:not(:disabled) { background-color: #003e7a; }
-        .btn:disabled, .btn-secondary:disabled, .btn-danger:disabled {
-            cursor: not-allowed; opacity: 0.6;
-        }
-        .btn-secondary, .btn-danger {
-            padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; flex-grow: 1; 
-        }
-        .btn-secondary { background-color: #f0f0f0; color: #333; border: 1px solid #ccc; }
-        .btn-danger { background-color: #dc3545; color: white; }
-
-        .alert {
-            background-color: #fff3cd; color: #8a6d3b; padding: 15px; border-radius: 6px; margin-bottom: 20px;
-            border: 1px solid #ffecb5; font-size: 16px; position: relative; 
-        }
-        .alert-close {
-            position: absolute; top: 5px; left: 10px; font-size: 20px; cursor: pointer;
-            font-weight: bold; color: #8a6d3b; line-height: 1; padding: 5px;
-        }
-        .status-bar {
-            text-align: center; padding: 10px; border-radius: 6px; margin-bottom: 20px; font-weight: bold;
-        }
-        .status-unstable { background-color: #ffecec; color: #c62828; }
-        .status-loading { background-color: #f0f8ff; color: #007bff; }
-        .status-stable-hidden { display: none; }
-        
-        .id-preview-container { border: 1px solid #ddd; border-radius: 6px; padding: 10px; margin-top: 10px; margin-bottom: 25px; display: inline-block; }
-        .id-preview { width: 100%; max-width: 200px; height: auto; display: block; }
-        label { display: block; margin-bottom: 5px; margin-top: 10px; font-weight: bold; color: #333; }
-    </style>
+    <title>أبشر - الحضور الدائم</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
-    <header class="main-header">
-        <div class="logo-section">
-            <div class="logo-absher" alt="Absher">Absher</div>
-        </div>
-        
-        <div class="top-links">
-            <a href="#" class="link-item"><i class="fas fa-arrow-left"></i> تسجيل الخروج</a>
-            <a href="#" class="link-item"><i class="fas fa-language"></i> English</a>
-            <a href="#" class="link-item"><i class="fas fa-bell"></i> الاشعارات</a>
-        </div>
-
-        <div class="user-profile">
-            <div class="profile-pic"><i class="fas fa-user"></i></div>
-            <span>يوسف</span>
-        </div>
-    </header>
-
-    <nav class="innerpage-navigation">
-        <div class="container-fluid">
-            <ul class="nav-list">
-                <li class="nav-item active"><a href="#">الخدمات الإلكترونية</a></li>
-                <li class="nav-item"><a href="#">التفاويض</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="main-content-wrapper">
-        <div class="content-flex">
-
-            <aside class="sidebar-right">
-                <ul class="list-unstyled">
-                    <li class="sidebar-item active">
-                        <i class="fas fa-file-alt"></i> طلبات الخدمات
-                    </li>
-                    <li class="sidebar-item">
-                        <i class="fas fa-handshake"></i> التفاويض
-                    </li>
-                    <li class="sidebar-item">
-                        <i class="fas fa-money-check-alt"></i> المدفوعات الحكومية
-                    </li>
-                </ul>
-            </aside>
-
-            <main class="content-left">
-                
-                <div class="search-row">
-                    <input type="text" placeholder="اكتب هنا للبحث" class="search-box">
-                </div>
-
-                <div id="root-absher-form" style="display: none;">
-                    <div class="form-container">
-                        <div id="form-root"></div>
-                    </div>
-                </div>
-
-                <div id="root-dashboard">
-                    <div class="services-grid">
-                        
-                        <a class="service-card" href="#" onclick="showForm('مواعيد'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
-                            <span>مواعيد</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('العمالة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
-                            <span>العمالة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('أفراد الأسرة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
-                            <span>أفراد الأسرة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
-                            <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
-                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (ديمو)</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('المركبات'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
-                            <span>المركبات</span>
-                        </a>
-
-                        <a class="service-card" href="#" onclick="showForm('خدماتي'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
-                            <span>خدماتي</span>
-                        </a>
-
-                    </div>
-                </div>
-
-            </main>
-        </div>
-    </div>
-    
-    <script>
-        function showForm(serviceName) {
-            // إخفاء لوحة التحكم
-            document.getElementById('root-dashboard').style.display = 'none';
-            // إظهار منطقة النموذج
-            document.getElementById('root-absher-form').style.display = 'block';
-
-            // يجدد محتوى الـ H1 ليطابق الخدمة التي تم النقر عليها
-            const formContainer = document.querySelector('.form-container');
-            
-            // تحديث العنوان داخل النموذج
-            const currentTitle = document.querySelector('.form-container h1');
-            if (currentTitle) {
-                 currentTitle.textContent = serviceName;
-            } else {
-                 formContainer.innerHTML = `<h1>${serviceName}</h1><div id="form-root"></div>`;
-            }
-
-            // يعيد تشغيل نموذج React
-            ReactDOM.createRoot(document.getElementById("form-root")).render(<AbsherForm />);
-        }
-        
-        // عند التحميل الأول، نعرض لوحة التحكم
-        document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('root-dashboard').style.display = 'grid';
-        });
-    </script>
-    
-    <script type="text/babel">
-function AbsherForm() {
-    // [جميع حالات React]
-    const [idNumber, setIdNumber] = React.useState("");
-    const [service, setService] = React.useState("");
-    const [notes, setNotes] = React.useState("");
-    const [latency, setLatency] = React.useState("يتم الفحص...");
-    const [failCount, setFailCount] = React.useState(0);
-    const [alertVisible, setAlertVisible] = React.useState(false);
-    const [idFrontPreview, setIdFrontPreview] = React.useState(null);
-    const [idBackPreview, setIdBackPreview] = React.useState(null);
-    const [isChecking, setIsChecking] = React.useState(true); 
-
-    const closeAlert = () => { setAlertVisible(false); };
-
-    // [منطق فحص الاتصال]
-    const checkConnection = async () => {
-        setIsChecking(true);
-        const start = Date.now();
-        try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 2500); 
-            await fetch("https://jsonplaceholder.typicode.com/posts/1", { signal: controller.signal });
-            clearTimeout(timeout);
-            const ping = Date.now() - start;
-            setLatency(`${ping}ms`);
-            setFailCount(0);
-            setAlertVisible(false);
-        } catch (e) {
-            setFailCount(prev => {
-                const newCount = prev + 1;
-                if (newCount >= 3) { setAlertVisible(true); }
-                return newCount;
-            });
-            setLatency("ضعيف / غير مستقر");
-        } finally { setIsChecking(false); }
-    };
-    React.useEffect(() => {
-        checkConnection();
-        const interval = setInterval(checkConnection, 6000);
-        return () => clearInterval(interval);
-    }, []);
-
-    // [منطق المسودة]
-    const loadDraft = () => {
-        const draft = localStorage.getItem("absher_draft");
-        if (draft) {
-             try {
-                const data = JSON.parse(draft);
-                setIdNumber(data.idNumber || "");
-                setService(data.service || "");
-                setNotes(data.notes || "");
-                if (data.idFrontPreview) setIdFrontPreview(data.idFrontPreview);
-                if (data.idBackPreview) setIdBackPreview(data.idBackPreview);
-                setAlertVisible(true); 
-                alert("تم استرجاع بيانات طلب سابق محفوظ (مسودة).");
-            } catch (e) { console.error("Error loading draft:", e); }
-        }
-    };
-    const saveDraft = (e) => {
-        if (e) e.preventDefault();
-        const formData = {
-            idNumber: idNumber, service: service, notes: notes, 
-            idFrontPreview: idFrontPreview, idBackPreview: idBackPreview,
-        };
-        localStorage.setItem("absher_draft", JSON.stringify(formData));
-        alert("تم حفظ المسودة بنجاح.");
-    };
-    const clearDraft = () => {
-        localStorage.removeItem("absher_draft");
-        setIdNumber(""); setService(""); setNotes("");
-        setIdFrontPreview(null); setIdBackPreview(null); setAlertVisible(false);
-        alert("تم مسح المسودة المخزّنة ومسح حقول النموذج.");
-    }
-    React.useEffect(() => { loadDraft(); }, []);
-
-    // [منطق رفع الصور]
-    const handleFileUpload = (e, setPreview) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => { setPreview(reader.result); };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    // [منطق الإرسال]
-    const submitForm = (e) => {
-        e.preventDefault();
-        
-        // قواعد التحقق الجديدة لرقم الهوية
-        if (idNumber.length !== 10) { alert("خطأ: يجب أن يتكون رقم الهوية من 10 خانات."); return; }
-        if (!/^\d+$/.test(idNumber)) { alert("خطأ: يجب أن يحتوي رقم الهوية على أرقام فقط، ولا يقبل حروف أو رموز."); return; }
-        
-        if (alertVisible && failCount >= 3) {
-            saveDraft(); 
-            alert("الاتصال ضعيف جداً! تم حفظ بياناتك (المسودة). سيتم نقلك لتأكيد الإرسال والحصول على رقم فاتورة سداد لاحقاً.");
-            return;
-        }
-        
-        localStorage.removeItem("absher_draft");
-        alert(`تم إرسال الطلب بنجاح لرقم الهوية: ${idNumber} في الوضع الطبيعي.`);
-    };
-
-    // [منطق حالة العرض]
-    let statusClass;
-    let statusMessage;
-    
-    if (isChecking) {
-        statusClass = "status-loading";
-        statusMessage = "يتم فحص حالة الاتصال...";
-    } else if (alertVisible) {
-        statusClass = "status-unstable";
-        statusMessage = `حالة الاتصال: ضعيف / غير مستقر (${latency})`;
-    } else {
-        statusClass = "status-stable-hidden"; 
-        statusMessage = `حالة الاتصال: مستقر (${latency})`;
-    }
-    
-
-    return (
-        <div dir="rtl"> 
-
-            {/* شريط حالة الاتصال - يتم إخفاؤه عبر CSS في حالة الاتصال الممتاز */}
-            <div className={`status-bar ${statusClass}`}>
-                <b>{statusMessage}</b>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>أبشر</h1>
+                <p class="tagline">الحضور الدائم</p>
             </div>
-
-
-            {/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */}
-            {alertVisible && (
-                <div className="alert">
-                    <span className="alert-close" onClick={closeAlert}>&times;</span>
-                    ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
+            
+            <div class="login-form">
+                <h2>تسجيل الدخول</h2>
+                <div class="form-group">
+                    <label for="loginId">رقم الهوية / الإقامة</label>
+                    <input type="text" id="loginId" class="form-control" placeholder="ادخل رقم الهوية" value="1234567890">
                 </div>
-            )}
-
-            <form onSubmit={submitForm}>
-
-                <label htmlFor="idNumber">🆔 رقم الهوية / الإقامة</label>
-                <input 
-                    id="idNumber" 
-                    className="input" 
-                    type="tel"
-                    inputMode="numeric"
-                    maxLength="10"
-                    placeholder="أدخل رقم الهوية"
-                    value={idNumber} 
-                    onChange={(e) => setIdNumber(e.target.value)}
-                    required 
-                />
-
-                <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
-                <select 
-                    id="service" 
-                    className="input" 
-                    value={service}
-                    onChange={(e) => setService(e.target.value)}
-                >
-                    <option value="">اختر الخدمة</option>
-                    <option>تجديد الهوية الوطنية</option>
-                    <option>تجديد جواز السفر</option>
-                    <option>إصدار الإقامة</option>
-                    <option>نقل ملكية مركبة</option>
-                </select>
-
-                <label htmlFor="notes">📝 ملاحظات إضافية</label>
-                <textarea 
-                    id="notes" 
-                    rows="4" 
-                    className="input"
-                    placeholder="اكتب تفاصيل إضافية (اختياري)"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                ></textarea>
-                
-                
-                <label>⬆️ رفع صورة الهوية (الأمامية)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
-                {idFrontPreview && (
-                    <div className="id-preview-container">
-                        <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
-                    </div>
-                )}
-
-                <label>⬆️ رفع صورة الهوية (الخلفية)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
-                {idBackPreview && (
-                    <div className="id-preview-container">
-                        <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
-                    </div>
-                )}
-                
-
-                <button className="btn" type="submit" disabled={isChecking}>
-                    {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
+                <div class="form-group">
+                    <label for="loginMobile">رقم الجوال</label>
+                    <input type="text" id="loginMobile" class="form-control" placeholder="ادخل رقم الجوال" value="0500666723">
+                </div>
+                <button id="loginBtn" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
                 </button>
                 
-                <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
-                    <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
-                        💾 حفظ مسودة يدوياً
-                    </button>
-                    <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
-                        🗑️ مسح المسودة
-                    </button>
+                <div class="demo-notes">
+                    <h4>بيانات تجريبية:</h4>
+                    <p><strong>الاسم:</strong> يوسف عاتي</p>
+                    <p><strong>الهوية:</strong> 1234567890</p>
+                    <p><strong>الجوال:</strong> 0500666723</p>
                 </div>
-            </form>
+            </div>
         </div>
-    );
-}
+    </div>
 
-// الكود يبدأ بدون عرض النموذج، وينتظر النقر على أيقونة الخدمة
-//ReactDOM.createRoot(document.getElementById("form-root")).render(null); 
-</script>
+    <!-- التطبيق الرئيسي (مخفي حتى تسجيل الدخول) -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- شريط حالة الاتصال -->
+        <div id="connectionStatus" class="connection-status online">
+            <div class="status-content">
+                <span class="status-icon">🟢</span>
+                <span class="status-text">متصل بالإنترنت</span>
+                <div class="user-welcome">
+                    مرحباً، <span id="userName">يوسف عاتي</span>
+                </div>
+                <div class="status-actions">
+                    <button id="simulateOffline" class="btn btn-outline">محاكاة قطع الاتصال</button>
+                    <button id="simulateOnline" class="btn btn-outline" style="display: none;">محاكاة إعادة الاتصال</button>
+                    <button id="logoutBtn" class="btn btn-outline">تسجيل الخروج</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنبيه الاستباقي -->
+        <div id="predictionAlert" class="prediction-alert hidden">
+            <div class="alert-content">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-text">
+                    <strong>الاتصال غير مستقر!</strong>
+                    <p>يبدو أن اتصالك بالإنترنت ضعيف. حمّل النسخة الآمنة الآن للمواصلة بدون إنترنت.</p>
+                </div>
+                <div class="alert-actions">
+                    <button id="downloadSafeMode" class="btn btn-primary">
+                        <i class="fas fa-shield-alt"></i> تحميل النسخة الآمنة
+                    </button>
+                    <button id="dismissAlert" class="btn btn-secondary">تجاهل</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الوضع الآمن -->
+        <div id="offlineMode" class="offline-mode hidden">
+            <div class="offline-header">
+                <div class="offline-indicator">
+                    <span class="status-dot"></span>
+                    <span>وضع العمل الآمن</span>
+                </div>
+                <div class="offline-timer">
+                    ⏳ متبقي: <span id="offlineTimer">05:00</span>
+                </div>
+                <button id="exitOffline" class="btn btn-outline">خروج</button>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <header class="main-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <h1>أبشر</h1>
+                        <span class="tagline">الحضور الدائم</span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#" class="nav-item active">الرئيسية</a>
+                        <a href="#" class="nav-item">الخدمات الإلكترونية</a>
+                        <a href="#" class="nav-item">التفاويض</a>
+                        <a href="#" class="nav-item">المدفوعات</a>
+                    </nav>
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <span class="user-name" id="headerUserName">يوسف عاتي</span>
+                            <span class="user-id" id="headerUserId">1234567890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <!-- معلومات المستخدم -->
+                <section class="user-profile-section">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profileName">يوسف عاتي</h2>
+                                <p class="profile-id">الهوية الوطنية: <span id="profileId">1234567890</span></p>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <span class="detail-label">تاريخ الميلاد:</span>
+                                <span class="detail-value" id="profileBirthDate">1447/12/01</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">مكان الميلاد:</span>
+                                <span class="detail-value" id="profileBirthPlace">جازان</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">رقم الجوال:</span>
+                                <span class="detail-value" id="profileMobile">0500666723</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">الحالة:</span>
+                                <span class="detail-value status-active" id="profileStatus">نشط</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- خدمات أبشر -->
+                <section class="services-section">
+                    <h2 class="section-title">الخدمات الإلكترونية</h2>
+                    
+                    <div class="services-grid">
+                        <!-- خدمة المخالفات المرورية -->
+                        <div class="service-card" data-service="traffic">
+                            <div class="service-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <h3>تمديد مهلة سداد المخالفات</h3>
+                            <p>تمديد مهلة سداد المخالفات المرورية بدون رسوم</p>
+                            <button class="btn btn-service" onclick="openService('traffic')">
+                                استخدام الخدمة
+                            </button>
+                        </div>
+
+                        <!-- خدمة تجديد الجواز -->
+                        <div class="service-card" data-service="passport">
+                            <div class="service-icon">
+                                <i class="fas fa-passport"></i>
+                            </div>
+                            <h3>تجديد جواز السفر</h3>
+                            <p>تجديد جواز السفر مع سداد الرسوم عبر سداد</p>
+                            <button class="btn btn-service" onclick="openService('passport')">
+                                استخدام الخدمة
+                            </button>
+                        </div>
+
+                        <!-- خدمة الإقامة -->
+                        <div class="service-card" data-service="iqama">
+                            <div class="service-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <h3>تجديد الإقامة</h3>
+                            <p>تجديد إقامة العمالة المنزلية</p>
+                            <button class="btn btn-service" onclick="openService('iqama')">
+                                استخدام الخدمة
+                            </button>
+                        </div>
+
+                        <!-- خدمة البيانات الشخصية -->
+                        <div class="service-card" data-service="profile">
+                            <div class="service-icon">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <h3>تعديل البيانات الشخصية</h3>
+                            <p>تحديث المعلومات الشخصية والاتصال</p>
+                            <button class="btn btn-service" onclick="openService('profile')">
+                                استخدام الخدمة
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- إحصائيات النظام -->
+                <section class="stats-section">
+                    <h3 class="section-subtitle">إحصائيات استخدامك</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="savedRequests">0</div>
+                            <div class="stat-label">طلب محفوظ</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="successfulSyncs">0</div>
+                            <div class="stat-label">مزامنة ناجحة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="offlineTime">0</div>
+                            <div class="stat-label">دقيقة عمل آمن</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalServices">4</div>
+                            <div class="stat-label">خدمة متاحة</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- نموذج الخدمة -->
+        <div id="serviceModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">الخدمة</h3>
+                    <button class="modal-close" onclick="closeService()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div id="serviceForm">
+                        <!-- سيتم تحميل النموذج هنا ديناميكياً -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="submitService" class="btn btn-primary">تأكيد وحفظ</button>
+                    <button class="btn btn-secondary" onclick="closeService()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- إشعارات -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
