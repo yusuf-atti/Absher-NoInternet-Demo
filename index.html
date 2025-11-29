@@ -53,6 +53,12 @@
             color: white;
         }
         
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
         .top-links .link-item {
             color: var(--absher-green);
             text-decoration: none;
@@ -63,12 +69,18 @@
             align-items: center;
             cursor: pointer;
         }
+
+        .top-links .link-item i {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+
+        .user-profile {
+            display: flex; align-items: center; gap: 8px; font-size: 14px;
+        }
         
         .profile-pic {
-            width: 40px;
-            height: 40px;
-            background-color: var(--absher-dark-green);
-            border-radius: 50%;
+            width: 40px; height: 40px; background-color: var(--absher-dark-green); border-radius: 50%;
         }
         .profile-pic i {
              color: white; line-height: 40px; font-size: 20px;
@@ -76,9 +88,7 @@
 
         /* INNER NAVIGATION (شريط التنقل الفرعي) */
         .innerpage-navigation {
-            background-color: var(--absher-green);
-            color: white;
-            padding: 0 30px;
+            background-color: var(--absher-green); padding: 0 30px;
         }
         
         .innerpage-navigation .nav-list {
@@ -117,19 +127,14 @@
         
         /* SERVICES GRID */
         .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;
         }
-        
         .service-card {
             text-align: center; border: 1px solid #eee; border-radius: 10px; padding: 30px 10px; background-color: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: box-shadow 0.2s, transform 0.2s; cursor: pointer;
-            text-decoration: none; color: inherit; display: block; /* لجعل البطاقة قابلة للنقر بالكامل */
+            text-decoration: none; color: inherit; display: block; 
         }
-        .service-card:hover {
-            box-shadow: 0 4px 10px rgba(0, 137, 64, 0.2); transform: translateY(-5px);
-        }
+        .service-card:hover { box-shadow: 0 4px 10px rgba(0, 137, 64, 0.2); transform: translateY(-5px); }
         .service-card-icon {
             border: 1px solid var(--absher-light-green); border-radius: 50%; padding: 20px; background-color: var(--absher-light-green);
             display: inline-block; margin-bottom: 15px;
@@ -140,17 +145,10 @@
         /* ======================= */
         /* تنسيقات نموذج AbsherForm */
         /* ======================= */
-        .form-container {
-            background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
+        .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         .form-container h1 { color: var(--absher-dark-green); font-size: 24px; margin-bottom: 25px; text-align: center; }
-
-        .input, select, textarea {
-            width: 100%; padding: 12px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box;
-        }
-        .btn {
-            background-color: var(--absher-primary-blue); color: white; padding: 15px; border: none; font-size: 18px; width: 100%; cursor: pointer; border-radius: 6px; transition: background-color 0.3s;
-        }
+        .input, select, textarea { width: 100%; padding: 12px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+        .btn { background-color: var(--absher-primary-blue); color: white; padding: 15px; border: none; font-size: 18px; width: 100%; cursor: pointer; border-radius: 6px; transition: background-color 0.3s; }
         .btn:hover:not(:disabled) { background-color: #003e7a; }
         .btn-secondary, .btn-danger {
             padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; flex-grow: 1; 
@@ -180,181 +178,224 @@
         .back-to-dashboard {
             background: none; border: none; color: var(--absher-green); text-decoration: underline; cursor: pointer; font-size: 14px; margin-bottom: 15px;
         }
+
+        /* ======================= */
+        /* تنسيقات شاشة الدخول الوهمية */
+        /* ======================= */
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--absher-gray);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h2 {
+            color: var(--absher-dark-green);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
     </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="logo-section">
-            <div class="logo-absher" alt="Absher">Absher</div>
-        </div>
-        
-        <div class="top-links">
-    <a href="#" class="link-item" onclick="alert('تم محاكاة تسجيل الخروج بنجاح!'); return false;">
-        <i class="fas fa-arrow-left"></i> تسجيل الخروج
-    </a>
-    
-    <a href="#" class="link-item">
-        <i class="fas fa-language"></i> English
-    </a>
-    <a href="#" class="link-item">
-        <i class="fas fa-bell"></i> الاشعارات
-    </a>
-</div>
-
-        <div class="user-profile">
-            <div class="profile-pic"><i class="fas fa-user"></i></div>
-            <span>يوسف</span>
-        </div>
-    </header>
-
-    <nav class="innerpage-navigation">
-        <div class="container-fluid">
-            <ul class="nav-list">
-                <li class="nav-item active"><a href="#">الخدمات الإلكترونية</a></li>
-                <li class="nav-item"><a href="#">التفاويض</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="main-content-wrapper">
-        <div class="content-flex">
-
-            <aside class="sidebar-right">
-                <ul class="list-unstyled">
-                    <li class="sidebar-item active">
-                        <i class="fas fa-file-alt"></i> طلبات الخدمات
-                    </li>
-                    <li class="sidebar-item">
-                        <i class="fas fa-handshake"></i> التفاويض
-                    </li>
-                    <li class="sidebar-item">
-                        <i class="fas fa-money-check-alt"></i> المدفوعات الحكومية
-                    </li>
-                </ul>
-            </aside>
-
-            <main class="content-left">
-                
-                <div class="search-row">
-                    <input type="text" placeholder="اكتب هنا للبحث" class="search-box">
-                </div>
-
-                <div id="root-absher-form" style="display: none;">
-                    <button class="back-to-dashboard" onclick="showDashboard()"><i class="fas fa-arrow-right"></i> العودة إلى الخدمات الرئيسية</button>
-                    <div class="form-container">
-                         <h1></h1>
-                        <div id="form-root"></div>
-                    </div>
-                </div>
-
-                <div id="root-dashboard">
-                    <div class="services-grid">
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
-                            <span>مواعيد</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة العمالة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
-                            <span>العمالة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة أفراد الأسرة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
-                            <span>أفراد الأسرة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
-                            <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
-                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (MVP)</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المركبات'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
-                            <span>المركبات</span>
-                        </a>
-
-                        <a class="service-card" href="#" onclick="showForm('نموذج الخدمات العامة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
-                            <span>خدماتي</span>
-                        </a>
-
-                    </div>
-                </div>
-                </main>
-                
-                <div class="search-row">
-                    <input type="text" placeholder="اكتب هنا للبحث" class="search-box">
-                </div>
-
-                <div id="root-absher-form" style="display: none;">
-                    <button class="back-to-dashboard" onclick="showDashboard()"><i class="fas fa-arrow-right"></i> العودة إلى الخدمات الرئيسية</button>
-                    <div class="form-container">
-                         <h1></h1>
-                        <div id="form-root"></div>
-                    </div>
-                </div>
-
-                <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
-    <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
-    <span>مواعيد</span>
-</a>
-                    <div class="services-grid">
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
-                            <span>مواعيد</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة العمالة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
-                            <span>العمالة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة أفراد الأسرة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
-                            <span>أفراد الأسرة</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
-                            <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
-                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (MVP)</span>
-                        </a>
-                        
-                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المركبات'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
-                            <span>المركبات</span>
-                        </a>
-
-                        <a class="service-card" href="#" onclick="showForm('نموذج الخدمات العامة'); return false;">
-                            <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
-                            <span>خدماتي</span>
-                        </a>
-
-                    </div>
-                </div>
-
-            </main>
+    <div id="login-screen" style="display: none;">
+        <div class="login-box">
+            <h2>تسجيل الدخول - محاكاة</h2>
+            <div class="alert alert-info">
+                للدخول، استخدم اسم المستخدم: **1234567890** و كلمة المرور: **1111**
+            </div>
+            <input type="text" id="login-username" class="input" placeholder="اسم المستخدم" value="" />
+            <input type="password" id="login-password" class="input" placeholder="كلمة المرور" value="" />
+            <button class="btn" onclick="handleLogin()">تسجيل الدخول</button>
+            <div style="margin-top: 15px;">
+                <a href="#" onclick="showDashboard(); return false;">تخطي إلى لوحة التحكم (للتجربة المباشرة)</a>
+            </div>
         </div>
     </div>
-    
-    <script>
+
+
+    <div id="dashboard-wrapper" style="display: none;">
+        <header class="main-header">
+            <div class="logo-section">
+                <div class="logo-absher" alt="Absher">Absher</div>
+            </div>
+            
+            <div class="top-links">
+                <a href="#" class="link-item" onclick="handleLogout(); return false;"><i class="fas fa-arrow-left"></i> تسجيل الخروج</a>
+                <a href="#" class="link-item"><i class="fas fa-language"></i> English</a>
+                <a href="#" class="link-item"><i class="fas fa-bell"></i> الاشعارات</a>
+            </div>
+
+            <div class="user-profile">
+                <div class="profile-pic"><i class="fas fa-user"></i></div>
+                <span id="header-user-name"></span>
+            </div>
+        </header>
+
+        <nav class="innerpage-navigation">
+            <div class="container-fluid">
+                <ul class="nav-list">
+                    <li class="nav-item active"><a href="#">الخدمات الإلكترونية</a></li>
+                    <li class="nav-item"><a href="#">التفاويض</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="main-content-wrapper">
+            <div class="content-flex">
+
+                <aside class="sidebar-right">
+                    <ul class="list-unstyled">
+                        <li class="sidebar-item active"><i class="fas fa-file-alt"></i> طلبات الخدمات</li>
+                        <li class="sidebar-item"><i class="fas fa-handshake"></i> التفاويض</li>
+                        <li class="sidebar-item"><i class="fas fa-money-check-alt"></i> المدفوعات الحكومية</li>
+                    </ul>
+                </aside>
+
+                <main class="content-left">
+                    
+                    <div class="search-row">
+                        <input type="text" placeholder="اكتب هنا للبحث" class="search-box">
+                    </div>
+
+                    <div id="root-absher-form" style="display: none;">
+                        <button class="back-to-dashboard" onclick="showDashboard()"><i class="fas fa-arrow-right"></i> العودة إلى الخدمات الرئيسية</button>
+                        <div class="form-container">
+                             <h1></h1>
+                            <div id="form-root"></div>
+                        </div>
+                    </div>
+
+                    <div id="root-dashboard">
+                        <div class="services-grid">
+                            
+                            <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
+                                <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
+                                <span>مواعيد</span>
+                            </a>
+                            
+                            <a class="service-card" href="#" onclick="showForm('نموذج خدمة العمالة'); return false;">
+                                <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
+                                <span>العمالة</span>
+                            </a>
+                            
+                            <a class="service-card" href="#" onclick="showForm('نموذج خدمة أفراد الأسرة'); return false;">
+                                <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
+                                <span>أفراد الأسرة</span>
+                            </a>
+                            
+                            <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
+                                <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
+                                <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (MVP)</span>
+                            </a>
+                            
+                            <a class="service-card" href="#" onclick="showForm('نموذج خدمة المركبات'); return false;">
+                                <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
+                                <span>المركبات</span>
+                            </a>
+
+                            <a class="service-card" href="#" onclick="showForm('نموذج الخدمات العامة'); return false;">
+                                <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
+                                <span>خدماتي</span>
+                            </a>
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div> <script>
+        const FAKE_USER = {
+            // بيانات المستخدم الوهمي المحدثة
+            id: "1234567890",
+            username: "1234567890", // ⬅️ اسم المستخدم (رقم السجل)
+            password: "1111",      // ⬅️ كلمة المرور الجديدة
+            name: "يوسف عاتي",
+            dob: "1447/12/01",
+            birthplace: "جازان",
+            mobile: "0500666723"
+        };
+        const USER_STORAGE_KEY = 'absher_logged_in_user';
+
+        function showLoginScreen() {
+            document.getElementById('dashboard-wrapper').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            
+            // ملء حقول الدخول بالبيانات الجديدة لتسهيل العرض
+            const usernameField = document.getElementById('login-username');
+            const passwordField = document.getElementById('login-password');
+            
+            if (usernameField && passwordField) {
+                usernameField.value = FAKE_USER.username;
+                passwordField.value = FAKE_USER.password;
+            }
+        }
+
         function showDashboard() {
-            // إخفاء منطقة النموذج
+            const user = JSON.parse(localStorage.getItem(USER_STORAGE_KEY));
+            if (user) {
+                // تحديث اسم المستخدم في الشريط العلوي
+                document.getElementById('header-user-name').textContent = `مرحباً، ${user.name.split(' ')[0]}`;
+            }
+
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard-wrapper').style.display = 'block';
+            
+            // إعادة عرض لوحة التحكم الافتراضية
             document.getElementById('root-absher-form').style.display = 'none';
-            // إظهار لوحة التحكم
             document.getElementById('root-dashboard').style.display = 'grid';
+        }
+
+        function handleLogin() {
+            const inputUser = document.getElementById('login-username').value;
+            const inputPass = document.getElementById('login-password').value;
+
+            if (inputUser === FAKE_USER.username && inputPass === FAKE_USER.password) {
+                // حفظ البيانات الجديدة في localStorage للمحاكاة
+                localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(FAKE_USER));
+                alert('تم تسجيل الدخول بنجاح! مرحباً بك.');
+                showDashboard();
+            } else {
+                alert('خطأ في اسم المستخدم أو كلمة المرور.');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem(USER_STORAGE_KEY);
+            alert('تم تسجيل الخروج بنجاح. سيتم توجيهك إلى شاشة الدخول.');
+            showLoginScreen();
+        }
+
+        function checkLoginStatus() {
+            const loggedInUser = localStorage.getItem(USER_STORAGE_KEY);
+            if (loggedInUser) {
+                showDashboard();
+            } else {
+                showLoginScreen();
+            }
         }
         
         function showForm(serviceName) {
-            // إخفاء لوحة التحكم
             document.getElementById('root-dashboard').style.display = 'none';
-            // إظهار منطقة النموذج
             document.getElementById('root-absher-form').style.display = 'block';
 
-            // تحديث العنوان داخل النموذج
             const formContainer = document.querySelector('.form-container');
             let h1Element = formContainer.querySelector('h1');
             let formRoot = formContainer.querySelector('#form-root');
@@ -365,14 +406,11 @@
             }
             h1Element.textContent = serviceName;
 
-            // يعيد تشغيل نموذج React
             ReactDOM.createRoot(formRoot).render(<AbsherForm />);
         }
         
-        // عند التحميل الأول، نعرض لوحة التحكم
-        document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('root-dashboard').style.display = 'grid';
-        });
+        // تشغيل التحقق من حالة الدخول عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
     </script>
     
     <script type="text/babel">
@@ -509,3 +547,85 @@ function AbsherForm() {
 
             {/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */}
             {alertVisible && (
+                <div className="alert">
+                    <span className="alert-close" onClick={closeAlert}>&times;</span>
+                    ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
+                </div>
+            )}
+
+            <form onSubmit={submitForm}>
+
+                <label htmlFor="idNumber">🆔 رقم الهوية / الإقامة</label>
+                <input 
+                    id="idNumber" 
+                    className="input" 
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength="10"
+                    placeholder="أدخل رقم الهوية"
+                    value={idNumber} 
+                    onChange={(e) => setIdNumber(e.target.value)}
+                    required 
+                />
+
+                <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
+                <select 
+                    id="service" 
+                    className="input" 
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                >
+                    <option value="">اختر الخدمة</option>
+                    <option>تجديد الهوية الوطنية</option>
+                    <option>تجديد جواز السفر</option>
+                    <option>إصدار الإقامة</option>
+                    <option>نقل ملكية مركبة</option>
+                </select>
+
+                <label htmlFor="notes">📝 ملاحظات إضافية</label>
+                <textarea 
+                    id="notes" 
+                    rows="4" 
+                    className="input"
+                    placeholder="اكتب تفاصيل إضافية (اختياري)"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                ></textarea>
+                
+                
+                <label>⬆️ رفع صورة الهوية (الأمامية)</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
+                {idFrontPreview && (
+                    <div className="id-preview-container">
+                        <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
+                    </div>
+                )}
+
+                <label>⬆️ رفع صورة الهوية (الخلفية)</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
+                {idBackPreview && (
+                    <div className="id-preview-container">
+                        <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
+                    </div>
+                )}
+                
+
+                <button className="btn" type="submit" disabled={isChecking}>
+                    {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
+                </button>
+                
+                <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
+                    <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
+                        💾 حفظ مسودة يدوياً
+                    </button>
+                    <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
+                        🗑️ مسح المسودة
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+}
+</script>
+</body>
+</html>
