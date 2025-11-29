@@ -101,13 +101,13 @@
             margin-bottom: 20px;
             border: 1px solid #ffecb5;
             font-size: 16px;
-            position: relative; /* لإحتواء زر الإغلاق */
+            position: relative; 
         }
         
         .alert-close {
             position: absolute;
             top: 5px;
-            left: 10px; /* لليسار في اتجاه RTL */
+            left: 10px; 
             font-size: 20px;
             cursor: pointer;
             font-weight: bold;
@@ -140,11 +140,7 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
-        .status-stable {
-            /* سنخفي هذا اللون عبر منطق JSX */
-            background-color: #e3f8ec; 
-            color: #0b8457;
-        }
+        /* تم إزالة status-stable لأنه سيتم إخفاؤه */
         .status-unstable {
             background-color: #ffecec;
             color: #c62828;
@@ -152,6 +148,10 @@
         .status-loading {
             background-color: #f0f8ff;
             color: #007bff;
+        }
+        /* ⬇️ الفئة الجديدة التي تجعل الشريط مخفياً تماماً عند الاتصال الممتاز ⬇️ */
+        .status-stable-hidden {
+            display: none; 
         }
     </style>
 
@@ -304,13 +304,11 @@ function AbsherForm() {
         }
 
         if (alertVisible && failCount >= 3) {
-            // الوضع الآمن: حفظ مسودة ومنع الإرسال الفعلي
             saveDraft(); 
             alert("الاتصال ضعيف جداً! تم حفظ بياناتك (المسودة). سيتم نقلك لتأكيد الإرسال والحصول على رقم فاتورة سداد لاحقاً.");
             return;
         }
         
-        // الإرسال الناجح في الوضع الطبيعي
         localStorage.removeItem("absher_draft");
         alert(`تم إرسال الطلب بنجاح لرقم الهوية: ${idNumber} في الوضع الطبيعي.`);
     };
@@ -328,7 +326,8 @@ function AbsherForm() {
         statusClass = "status-unstable";
         statusMessage = `حالة الاتصال: ضعيف / غير مستقر (${latency})`;
     } else {
-        statusClass = "status-stable";
+        // ⬇️⬇️ التعديل هنا: استخدام الفئة المخفية عند الاتصال الممتاز ⬇️⬇️
+        statusClass = "status-stable-hidden"; 
         statusMessage = `حالة الاتصال: مستقر (${latency})`;
     }
     
@@ -338,14 +337,10 @@ function AbsherForm() {
 
             <h1>خدمة أبشر - تقديم طلب بدون إنترنت</h1>
 
-            {/* شريط حالة الاتصال - يظهر فقط في حالة الفحص أو الضعف (التعديل الأخير) */}
-            {isChecking || alertVisible ? (
-                <div className={`status-bar ${statusClass}`}>
-                    <b>{statusMessage}</b>
-                </div>
-            ) : (
-                null // لا يتم عرض الشريط عندما يكون الاتصال مستقراً
-            )}
+            {/* شريط حالة الاتصال - يتم عرضه دائماً ويتم إخفاؤه عبر CSS في حالة الاتصال الممتاز */}
+            <div className={`status-bar ${statusClass}`}>
+                <b>{statusMessage}</b>
+            </div>
 
 
             {/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */}
