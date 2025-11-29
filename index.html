@@ -190,8 +190,17 @@
         </div>
         
         <div class="top-links">
-            <a href="#" class="link-item" onclick="alert('تم محاكاة تسجيل الخروج بنجاح!'); return false;"><i class="fas fa-arrow-left"></i> تسجيل الخروج</a>
-        </div>
+    <a href="#" class="link-item" onclick="alert('تم محاكاة تسجيل الخروج بنجاح!'); return false;">
+        <i class="fas fa-arrow-left"></i> تسجيل الخروج
+    </a>
+    
+    <a href="#" class="link-item">
+        <i class="fas fa-language"></i> English
+    </a>
+    <a href="#" class="link-item">
+        <i class="fas fa-bell"></i> الاشعارات
+    </a>
+</div>
 
         <div class="user-profile">
             <div class="profile-pic"><i class="fas fa-user"></i></div>
@@ -240,6 +249,58 @@
                 </div>
 
                 <div id="root-dashboard">
+                    <div class="services-grid">
+                        
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
+                            <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <span>مواعيد</span>
+                        </a>
+                        
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة العمالة'); return false;">
+                            <div class="service-card-icon"><i class="fas fa-users-cog"></i></div>
+                            <span>العمالة</span>
+                        </a>
+                        
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة أفراد الأسرة'); return false;">
+                            <div class="service-card-icon"><i class="fas fa-user-friends"></i></div>
+                            <span>أفراد الأسرة</span>
+                        </a>
+                        
+                        <a class="service-card" href="#" id="my-service-btn" onclick="showForm('نموذج الوضع الآمن - تجديد الهوية'); return false;">
+                            <div class="service-card-icon" style="background-color: #ff9900; border-color: #ff9900;"><i class="fas fa-shield-alt" style="color:white;"></i></div>
+                            <span style="color: #ff9900; font-weight: bold;">خدمة الوضع الآمن (MVP)</span>
+                        </a>
+                        
+                        <a class="service-card" href="#" onclick="showForm('نموذج خدمة المركبات'); return false;">
+                            <div class="service-card-icon"><i class="fas fa-car-side"></i></div>
+                            <span>المركبات</span>
+                        </a>
+
+                        <a class="service-card" href="#" onclick="showForm('نموذج الخدمات العامة'); return false;">
+                            <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
+                            <span>خدماتي</span>
+                        </a>
+
+                    </div>
+                </div>
+                </main>
+                
+                <div class="search-row">
+                    <input type="text" placeholder="اكتب هنا للبحث" class="search-box">
+                </div>
+
+                <div id="root-absher-form" style="display: none;">
+                    <button class="back-to-dashboard" onclick="showDashboard()"><i class="fas fa-arrow-right"></i> العودة إلى الخدمات الرئيسية</button>
+                    <div class="form-container">
+                         <h1></h1>
+                        <div id="form-root"></div>
+                    </div>
+                </div>
+
+                <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
+    <div class="service-card-icon"><i class="fas fa-calendar-alt"></i></div>
+    <span>مواعيد</span>
+</a>
                     <div class="services-grid">
                         
                         <a class="service-card" href="#" onclick="showForm('نموذج خدمة المواعيد'); return false;">
