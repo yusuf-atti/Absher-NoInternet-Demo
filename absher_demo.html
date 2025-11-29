@@ -1,56 +1,441 @@
-// ...
-/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */
-{alertVisible && (
-    <div className="alert">
-        <span className="alert-close" onClick={closeAlert}>&times;</span>
-        ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
-    </div>
-)}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمة أبشر - نموذج طلب جديد (ديمو)</title>
 
-<form onSubmit={submitForm}>
+    <style>
+        body {
+            font-family: "Tahoma", sans-serif;
+            background-color: #f2f6f8;
+            margin: 0;
+            padding: 30px;
+            direction: rtl; 
+        }
 
-    {/* رقم الهوية */}
-    <label htmlFor="idNumber">🆔 رقم الهوية</label>
-    {/* ... حقل الإدخال ... */}
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
 
-    {/* رفع الهوية الأمامية */}
-    <label>🖼️ صورة الهوية (الأمامية)</label>
-    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
-    {idFrontPreview && (
-        <div className="id-preview-container">
-            <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
-        </div>
-    )}
+        h1 {
+            text-align: center;
+            color: #0b5aa2;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    {/* رفع الهوية الخلفية */}
-    <label>🖼️ صورة الهوية (الخلفية)</label>
-    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
-    {idBackPreview && (
-        <div className="id-preview-container">
-            <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
-        </div>
-    )}
+        .input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
 
-    {/* خدمات أبشر */}
-    <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
-    {/* ... حقل الاختيار ... */}
+        .btn {
+            background-color: #004b91;
+            color: white;
+            padding: 15px;
+            border: none;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
 
-    {/* ملاحظات */}
-    <label htmlFor="notes">📝 ملاحظات إضافية</label>
-    {/* ... حقل النص ... */}
+        .btn:hover:not(:disabled) {
+            background-color: #003e7a;
+        }
+        
+        /* تلوين الازرار المعطلة بلون رمادي فاتح */
+        .btn:disabled, .btn-secondary:disabled, .btn-danger:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
 
-    {/* أزرار الإجراءات - تم إضافة أيقونات */}
-    <button className="btn" type="submit" disabled={isChecking}>
-        {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
-    </button>
+        /* تنسيق الأزرار الثانوية */
+        .btn-secondary, .btn-danger {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            flex-grow: 1; 
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .alert {
+            background-color: #fff3cd;
+            color: #8a6d3b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #ffecb5;
+            font-size: 16px;
+            position: relative; /* لإحتواء زر الإغلاق */
+        }
+        
+        .alert-close {
+            position: absolute;
+            top: 5px;
+            left: 10px; /* لليسار في اتجاه RTL */
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #8a6d3b;
+            line-height: 1;
+            padding: 5px;
+        }
+
+
+        .id-preview-container {
+            border: 1px solid #ddd; 
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px; 
+            display: inline-block; 
+        }
+
+        .id-preview {
+            width: 100%;
+            max-width: 200px; 
+            height: auto;
+            display: block;
+        }
+
+        .status-bar {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .status-stable {
+            /* سنخفي هذا اللون عبر منطق JSX */
+            background-color: #e3f8ec; 
+            color: #0b8457;
+        }
+        .status-unstable {
+            background-color: #ffecec;
+            color: #c62828;
+        }
+        .status-loading {
+            background-color: #f0f8ff;
+            color: #007bff;
+        }
+    </style>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+function AbsherForm() {
+    // =======================
+    // حالات النموذج (Controlled Components)
+    // =======================
+    const [idNumber, setIdNumber] = React.useState("");
+    const [service, setService] = React.useState("");
+    const [notes, setNotes] = React.useState("");
+        
+    // حالات الاتصال والملفات
+    const [latency, setLatency] = React.useState("يتم الفحص...");
+    const [failCount, setFailCount] = React.useState(0);
+    const [alertVisible, setAlertVisible] = React.useState(false);
+    const [idFrontPreview, setIdFrontPreview] = React.useState(null);
+    const [idBackPreview, setIdBackPreview] = React.useState(null);
+    const [isChecking, setIsChecking] = React.useState(true); 
+
+    // دالة جديدة لإغلاق التنبيه يدوياً 
+    const closeAlert = () => {
+        setAlertVisible(false);
+    };
+
+    // =======================
+    // منطق فحص الاتصال (Connection Check Logic)
+    // =======================
+    const checkConnection = async () => {
+        setIsChecking(true);
+        const start = Date.now();
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 2500); 
+
+            await fetch("https://jsonplaceholder.typicode.com/posts/1", { signal: controller.signal });
+            clearTimeout(timeout);
+
+            const ping = Date.now() - start;
+            setLatency(`${ping}ms`);
+            setFailCount(0);
+            setAlertVisible(false);
+
+        } catch (e) {
+            setFailCount(prev => {
+                const newCount = prev + 1;
+                if (newCount >= 3) { 
+                    setAlertVisible(true);
+                }
+                return newCount;
+            });
+            setLatency("ضعيف / غير مستقر");
+        } finally {
+            setIsChecking(false);
+        }
+    };
+
+    // تشغيل فحص الاتصال عند التحميل وكل 6 ثواني
+    React.useEffect(() => {
+        checkConnection();
+        const interval = setInterval(checkConnection, 6000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // =======================
+    // حفظ / قراءة المسودة (Offline Draft Logic)
+    // =======================
+    const loadDraft = () => {
+        const draft = localStorage.getItem("absher_draft");
+        if (draft) {
+            try {
+                const data = JSON.parse(draft);
+                
+                setIdNumber(data.idNumber || "");
+                setService(data.service || "");
+                setNotes(data.notes || "");
+                
+                if (data.idFrontPreview) setIdFrontPreview(data.idFrontPreview);
+                if (data.idBackPreview) setIdBackPreview(data.idBackPreview);
+                
+                setAlertVisible(true); 
+                alert("تم استرجاع بيانات طلب سابق محفوظ (مسودة).");
+            } catch (e) {
+                console.error("Error loading draft:", e);
+            }
+        }
+    };
+
+    const saveDraft = (e) => {
+        if (e) e.preventDefault();
+        const formData = {
+            idNumber: idNumber,
+            service: service,
+            notes: notes,
+            idFrontPreview: idFrontPreview,
+            idBackPreview: idBackPreview,
+        };
+        localStorage.setItem("absher_draft", JSON.stringify(formData));
+        alert("تم حفظ المسودة بنجاح.");
+    };
+
+    const clearDraft = () => {
+        localStorage.removeItem("absher_draft");
+        setIdNumber("");
+        setService("");
+        setNotes("");
+        setIdFrontPreview(null);
+        setIdBackPreview(null);
+        setAlertVisible(false);
+        alert("تم مسح المسودة المخزّنة ومسح حقول النموذج.");
+    }
+
+    React.useEffect(() => {
+        loadDraft();
+    }, []);
+
+    // =======================
+    // رفع الصور (File Handling)
+    // =======================
+    const handleFileUpload = (e, setPreview) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // =======================
+    // إرسال النموذج (Submit Logic)
+    // =======================
+    const submitForm = (e) => {
+        e.preventDefault();
+        
+        if (!idNumber) {
+            alert("يُرجى إدخال رقم الهوية قبل الإرسال.");
+            return;
+        }
+
+        if (alertVisible && failCount >= 3) {
+            // الوضع الآمن: حفظ مسودة ومنع الإرسال الفعلي
+            saveDraft(); 
+            alert("الاتصال ضعيف جداً! تم حفظ بياناتك (المسودة). سيتم نقلك لتأكيد الإرسال والحصول على رقم فاتورة سداد لاحقاً.");
+            return;
+        }
+        
+        // الإرسال الناجح في الوضع الطبيعي
+        localStorage.removeItem("absher_draft");
+        alert(`تم إرسال الطلب بنجاح لرقم الهوية: ${idNumber} في الوضع الطبيعي.`);
+    };
+
+    // =======================
+    // عرض حالة الاتصال (Status Display Logic)
+    // =======================
+    let statusClass;
+    let statusMessage;
     
-    <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
-        <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
-            💾 حفظ مسودة يدوياً
-        </button>
-        <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
-            🗑️ مسح المسودة
-        </button>
-    </div>
-</form>
-// ...
+    if (isChecking) {
+        statusClass = "status-loading";
+        statusMessage = "يتم فحص حالة الاتصال...";
+    } else if (alertVisible) {
+        statusClass = "status-unstable";
+        statusMessage = `حالة الاتصال: ضعيف / غير مستقر (${latency})`;
+    } else {
+        statusClass = "status-stable";
+        statusMessage = `حالة الاتصال: مستقر (${latency})`;
+    }
+    
+
+    return (
+        <div className="container" dir="rtl">
+
+            <h1>خدمة أبشر - تقديم طلب بدون إنترنت</h1>
+
+            {/* شريط حالة الاتصال - يظهر فقط في حالة الفحص أو الضعف (التعديل الأخير) */}
+            {isChecking || alertVisible ? (
+                <div className={`status-bar ${statusClass}`}>
+                    <b>{statusMessage}</b>
+                </div>
+            ) : (
+                null // لا يتم عرض الشريط عندما يكون الاتصال مستقراً
+            )}
+
+
+            {/* تنبيه ضعف الاتصال - تم إضافة زر إغلاق */}
+            {alertVisible && (
+                <div className="alert">
+                    <span className="alert-close" onClick={closeAlert}>&times;</span>
+                    ⚠️ **ضعف اتصال / انقطاع وشيك!** يوصى بشدة **حفظ المسودة** للمتابعة في الوضع الآمن.
+                </div>
+            )}
+
+            <form onSubmit={submitForm}>
+
+                {/* رقم الهوية - مُتحكَّم به */}
+                <label htmlFor="idNumber">🆔 رقم الهوية / الإقامة</label>
+                <input 
+                    id="idNumber" 
+                    className="input" 
+                    type="text" 
+                    placeholder="أدخل رقم الهوية"
+                    value={idNumber} 
+                    onChange={(e) => setIdNumber(e.target.value)}
+                    required 
+                />
+
+                {/* خدمات أبشر - مُتحكَّم به */}
+                <label htmlFor="service">⚙️ نوع الخدمة المطلوبة</label>
+                <select 
+                    id="service" 
+                    className="input" 
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                >
+                    <option value="">اختر الخدمة</option>
+                    <option>تجديد الهوية الوطنية</option>
+                    <option>تجديد جواز السفر</option>
+                    <option>إصدار الإقامة</option>
+                    <option>نقل ملكية مركبة</option>
+                </select>
+
+                {/* ملاحظات - مُتحكَّم به */}
+                <label htmlFor="notes">📝 ملاحظات إضافية</label>
+                <textarea 
+                    id="notes" 
+                    rows="4" 
+                    className="input"
+                    placeholder="اكتب تفاصيل إضافية (اختياري)"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                ></textarea>
+                
+                
+                {/* رفع الهوية الأمامية */}
+                <label>⬆️ رفع صورة الهوية (الأمامية)</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdFrontPreview)} />
+                {idFrontPreview && (
+                    <div className="id-preview-container">
+                        <img src={idFrontPreview} className="id-preview" alt="معاينة الهوية الأمامية" />
+                    </div>
+                )}
+
+                {/* رفع الهوية الخلفية */}
+                <label>⬆️ رفع صورة الهوية (الخلفية)</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setIdBackPreview)} />
+                {idBackPreview && (
+                    <div className="id-preview-container">
+                        <img src={idBackPreview} className="id-preview" alt="معاينة الهوية الخلفية" />
+                    </div>
+                )}
+                
+
+                {/* أزرار الإجراءات */}
+                <button className="btn" type="submit" disabled={isChecking}>
+                    {alertVisible ? "🛡️ إرسال الطلب في الوضع الآمن" : "✅ إرسال الطلب"}
+                </button>
+                
+                <div style={{marginTop: '10px', display: 'flex', gap: '10px'}}>
+                    <button type="button" className="btn-secondary" onClick={saveDraft} disabled={isChecking}>
+                        💾 حفظ مسودة يدوياً
+                    </button>
+                    <button type="button" className="btn-danger" onClick={clearDraft} disabled={isChecking}>
+                        🗑️ مسح المسودة
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<AbsherForm />);
+
+</script>
+</body>
+</html>
