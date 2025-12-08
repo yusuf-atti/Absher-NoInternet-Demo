@@ -1,27 +1,465 @@
 <!DOCTYPE html>
-<html id="app" style="height: 100%" lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<title>Absherthon - الحقيقة</title>
-<base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي أبشر - MVP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #007f3d;
+            --primary-dark: #005c2c;
+            --bg-light: #f8f9fa;
+            --text-main: #1f2937;
+            --white: #ffffff;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #e5e5e5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q1MYQTZ0MT"></script>
+        .mobile-frame {
+            width: 390px;
+            height: 844px;
+            background-color: var(--bg-light);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+            border: 12px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
 
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-dataLayer.push(arguments);
-}
-gtag('js', new Date());
-gtag('config', 'G-Q1MYQTZ0MT');
-</script>
+        .header {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 50px 20px 25px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,127,61,0.2);
+            flex-shrink: 0;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-welcome h2 { margin: 0; font-size: 20px; font-weight: 800; }
+        .user-welcome p { margin: 5px 0 0; opacity: 0.9; font-size: 13px; letter-spacing: 1px; }
+
+        .status-bar {
+            margin: -20px 20px 15px;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 10;
+        }
+        .online { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .offline { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        .content {
+            flex: 1;
+            padding: 10px 20px;
+            overflow-y: auto;
+            padding-bottom: 80px; 
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: ''; width: 4px; height: 20px; background: var(--primary); border-radius: 2px; display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.2s;
+        }
+        .card:active { transform: scale(0.98); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .card-header h3 { margin: 0; font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        
+        .icon-box {
+            width: 35px; height: 35px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        /* الهوية الرقمية والباركود */
+        .digital-id {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #ecfdf5;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+        
+        /* تنسيق العمود الأيسر للصورة والباركود */
+        .id-media-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qr-section {
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+            width: 70px; /* تصغير قليل لاستيعاب الصورة */
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        .qr-section::after {
+            content: ''; position: absolute; width: 100%; height: 3px;
+            background: var(--primary); box-shadow: 0 0 8px var(--primary);
+            top: 0; left: 0; animation: scan 1.8s ease-in-out infinite alternate;
+        }
+        .qr-code-icon { color: var(--text-main); font-size: 2.5em; animation: pulse 2s infinite; }
+        
+        /* تنسيق الصورة الشخصية */
+        .user-photo-frame {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            background: #ccc;
+        }
+        .user-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes scan { 0% { top: 0; opacity: 0.6; } 100% { top: 100%; opacity: 0.6; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: 'Tajawal', sans-serif;
+            transition: background 0.3s;
+        }
+        .btn:hover { background-color: var(--primary-dark); }
+        .btn-secondary { background-color: #f3f4f6; color: var(--text-main); }
+
+        .pending-toast {
+            position: absolute;
+            bottom: 90px; left: 20px; right: 20px;
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+        .pending-toast.active { transform: translateY(0); }
+
+        .nav-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            padding: 15px 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+        }
+        .nav-item { color: #9ca3af; font-size: 20px; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+
+        .demo-panel {
+            position: absolute;
+            right: -220px; top: 50px;
+            width: 200px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+        @media (min-width: 800px) { .demo-panel { display: block; } }
+        
+        .switch-btn {
+            display: block; width: 100%;
+            padding: 10px; margin-bottom: 10px;
+            border: 2px solid #eee; background: white;
+            border-radius: 8px; cursor: pointer;
+        }
+    </style>
 </head>
+<body>
 
-<body class="h-full">
-<div id="root"></div>
-<script src="runtime.4830f685a575bc51.esm.js" type="module"></script><script src="polyfills.276a98741aa758c8.esm.js" type="module"></script><script src="main.018b888713bd9d17.esm.js" type="module"></script></body>
+    <div class="mobile-frame">
+        <div class="header">
+            <div class="header-top">
+                <i class="fas fa-bars fa-lg"></i>
+                <i class="fas fa-bell fa-lg"></i>
+            </div>
+            <div class="user-welcome">
+                <h2>مرحباً، يوسف</h2>
+                <p>الهوية الوطنية: 1034911469</p>
+            </div>
+        </div>
 
+        <div id="statusIndicator" class="status-bar online">
+            <i class="fas fa-wifi"></i> <span>متصل بالإنترنت</span>
+        </div>
+
+        <div class="content">
+            
+            <div class="card digital-id">
+                <div class="card-header">
+                    <h3 style="color: white;"><i class="fas fa-shield-alt"></i> الهوية الرقمية</h3>
+                    <i class="fas fa-check-circle" style="color: #34d399;"></i>
+                </div>
+                <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                    <div style="padding-top: 10px;">
+                        <p style="margin: 0; font-size: 12px; opacity: 0.8;">الاسم الكامل</p>
+                        <p style="margin: 0 0 15px; font-weight: bold; font-size: 16px;">يوسف زيلع عاتي</p>
+                        
+                        <p style="margin: 0; font-size: 12px; opacity: 0.8;">تاريخ الميلاد</p>
+                        <p style="margin: 0 0 15px; font-weight: bold;">1415/05/20</p>
+
+                        <p style="margin: 0; font-size: 12px; opacity: 0.8;">رقم النسخة</p>
+                        <p style="margin: 0; font-weight: bold;">1</p>
+                    </div>
+
+                    <div class="id-media-col">
+                        <div class="qr-section">
+                            <i class="fas fa-qrcode qr-code-icon"></i>
+                        </div>
+                        <div class="user-photo-frame">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY-I-n1Ad9xArShctMv6Jjnkv9riX7mtru1_vfdTPATA&s=10" alt="صورة المستخدم">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title">خدماتي</h3>
+
+            <div class="card" id="trafficCard">
+                <div class="card-header">
+                    <h3><div class="icon-box"><i class="fas fa-traffic-light"></i></div> المرور</h3>
+                    <i class="fas fa-arrow-left" id="backBtn" style="cursor: pointer; display: none; color: #6b7280;" onclick="resetTrafficCard()"></i>
+                </div>
+
+                <div id="step-1">
+                    <button class="btn" onclick="goToStep2()">تمديد مخالفة مرورية</button>
+                    <button class="btn btn-secondary" style="margin-top: 10px;">الاستعلام عن المخالفات</button>
+                </div>
+
+                <div id="step-2" style="display: none;">
+                    <div style="background: #f3f4f6; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #e5e7eb;">
+                        <p style="margin: 0 0 5px; font-size: 12px; color: #6b7280;">رقم المخالفة</p>
+                        <h2 style="margin: 0; color: var(--text-main); letter-spacing: 1px;">1234567890</h2>
+                        <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                            <span>تاريخ المخالفة:</span>
+                            <span style="font-weight: bold;">1445/03/15</span>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="processExtension()">تمديد المخالفة 90 يوم</button>
+                </div>
+
+                <div id="step-3" style="display: none; text-align: center; padding: 20px 0;">
+                    <div style="width: 60px; height: 60px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                        <i class="fas fa-check fa-2x" style="color: #059669;"></i>
+                    </div>
+                    <h3 style="margin: 0 0 10px;">تم تمديد المخالفة 90 يوم</h3>
+                    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="resetTrafficCard()">عودة للخدمات</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><div class="icon-box"><i class="fas fa-users"></i></div> أفراد الأسرة</h3>
+                </div>
+                <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px;">
+                    <div style="min-width: 80px; text-align: center;">
+                        <div style="width: 50px; height: 50px; background: #e5e7eb; border-radius: 50%; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-child"></i></div>
+                        <span style="font-size: 12px;">أحمد</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="pendingToast" class="pending-toast">
+            <i class="fas fa-cloud-upload-alt fa-lg" style="color: #d97706;"></i>
+            <div>
+                <strong style="display: block; color: #92400e;">وضع عدم الاتصال</strong>
+                <span id="pendingText" style="font-size: 12px; color: #b45309;">تم حفظ طلبك للمزامنة لاحقاً</span>
+            </div>
+        </div>
+
+        <div class="nav-bar">
+            <div class="nav-item active"><i class="fas fa-home"></i></div>
+            <div class="nav-item"><i class="fas fa-wallet"></i></div>
+            <div class="nav-item"><i class="fas fa-list"></i></div>
+            <div class="nav-item"><i class="fas fa-user"></i></div>
+        </div>
+    </div>
+
+    <div class="demo-panel">
+        <h4><i class="fas fa-cogs"></i> تحكم العرض</h4>
+        <button class="switch-btn" onclick="toggleNetwork()">
+            <i class="fas fa-wifi"></i> تبديل الاتصال
+        </button>
+        <button class="switch-btn" onclick="clearData()" style="color: red;">
+            <i class="fas fa-trash"></i> مسح البيانات
+        </button>
+    </div>
+
+    <script>
+        let isOnline = navigator.onLine;
+        let pendingQueue = [];
+
+        try {
+            const savedData = localStorage.getItem('absherQueue');
+            if (savedData) {
+                pendingQueue = JSON.parse(savedData);
+            }
+        } catch (e) { console.error(e); }
+
+        window.addEventListener('online', () => updateNetworkStatus(true));
+        window.addEventListener('offline', () => updateNetworkStatus(false));
+        window.onload = () => updateNetworkStatus(navigator.onLine);
+
+        function updateNetworkStatus(status) {
+            isOnline = status;
+            const statusEl = document.getElementById('statusIndicator');
+            if (statusEl) {
+                if (isOnline) {
+                    statusEl.className = 'status-bar online';
+                    statusEl.innerHTML = '<i class="fas fa-wifi"></i> <span>متصل بالإنترنت</span>';
+                    if (pendingQueue.length > 0) processQueue();
+                } else {
+                    statusEl.className = 'status-bar offline';
+                    statusEl.innerHTML = '<i class="fas fa-wifi-slash"></i> <span>غير متصل (بيانات محفوظة)</span>';
+                }
+            }
+        }
+
+        // منطق السيناريو
+        function goToStep2() {
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+        }
+
+        function processExtension() {
+            if (isOnline) {
+                showSuccessScreen();
+            } else {
+                pendingQueue.push("تمديد مخالفة (1234567890)");
+                saveToLocal();
+                showToast("تم حفظ طلب التمديد للمزامنة");
+                showSuccessScreen();
+            }
+        }
+
+        function showSuccessScreen() {
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
+        }
+
+        function resetTrafficCard() {
+            document.getElementById('step-1').style.display = 'block';
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+        }
+
+        function processQueue() {
+            showToast(`جاري الاتصال... ${pendingQueue.length} طلبات معلقة 🔄`);
+            setTimeout(() => {
+                const toast = document.getElementById('pendingToast');
+                if(toast) toast.classList.remove('active');
+                alert(`✅ تم استعادة الاتصال ومزامنة:\n- ${pendingQueue.join('\n- ')}`);
+                pendingQueue = [];
+                saveToLocal();
+            }, 2000);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('pendingToast');
+            if(toast) {
+                document.getElementById('pendingText').innerText = msg;
+                toast.classList.add('active');
+                setTimeout(() => {
+                    if(pendingQueue.length === 0) toast.classList.remove('active');
+                }, 4000);
+            }
+        }
+
+        function saveToLocal() { localStorage.setItem('absherQueue', JSON.stringify(pendingQueue)); }
+        function toggleNetwork() { updateNetworkStatus(!isOnline); }
+        function clearData() {
+            localStorage.clear();
+            pendingQueue = [];
+            alert('تم مسح الذاكرة المحلية');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
