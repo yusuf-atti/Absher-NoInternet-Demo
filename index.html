@@ -1,523 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة التهنئة الرسمية | صحيفة الحقيقة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&amp;family=Tajawal:wght@300;500;800&amp;family=Amiri:wght@700&amp;display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-        :root {
-            --gold: #d4a574;
-            --gold-light: #e8c4a0;
-            --gold-dark: #8b6f47;
-            --bg-deep: #0a0e27;
-            --bg-darker: #050609;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-hover: rgba(255, 255, 255, 0.08);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 111, 71, 0.08) 0%, transparent 50%);
-            font-family: 'Cairo', sans-serif;
-            color: #e2e8f0;
-            overflow-x: hidden;
-            margin: 0;
-            min-height: 100vh;
-        }
-
-        .glass-card {
-            background: linear-gradient(135deg, var(--glass) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(212, 165, 116, 0.25);
-            border-radius: 32px;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
-            border-radius: 32px;
-            pointer-events: none;
-        }
-
-        .glass-card:hover {
-            background: linear-gradient(135deg, var(--glass-hover) 0%, rgba(255, 255, 255, 0.04) 100%);
-            border-color: rgba(212, 165, 116, 0.45);
-            box-shadow: 0 25px 80px rgba(212, 165, 116, 0.2), inset 0 0 30px rgba(212, 165, 116, 0.05);
-            transform: translateY(-3px);
-        }
-
-        .gold-text {
-            background: linear-gradient(135deg, #f5e6d3 0%, #e8c4a0 20%, #d4a574 40%, #a0826d 70%, #8b6f47 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 2px 10px rgba(212, 165, 116, 0.3));
-        }
-
-        #particleCanvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        @keyframes shimmer-gold {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
-        @keyframes float-gentle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        @keyframes glow-pulse-intense {
-            0%, 100% { box-shadow: 0 0 30px rgba(212, 165, 116, 0.5), 0 0 60px rgba(212, 165, 116, 0.25); }
-            50% { box-shadow: 0 0 50px rgba(212, 165, 116, 0.7), 0 0 100px rgba(212, 165, 116, 0.4); }
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #f5e6d3 0%, #d4a574 35%, #a0826d 100%);
-            color: #0a0e27 !important;
-            box-shadow: 0 20px 50px rgba(212, 165, 116, 0.45), 0 0 40px rgba(212, 165, 116, 0.25);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            font-weight: 900;
-            letter-spacing: 2px;
-            border: none;
-        }
-
-        .download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-            z-index: 1;
-        }
-
-        .download-btn:hover:not(:disabled) {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 30px 70px rgba(212, 165, 116, 0.6), 0 0 60px rgba(212, 165, 116, 0.35);
-        }
-
-        .download-btn:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .download-btn:active:not(:disabled) {
-            transform: translateY(-1px) scale(1);
-        }
-
-        .download-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .template-option {
-            cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            border: 3px solid transparent;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-            border-radius: 16px;
-        }
-
-        .template-option::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: left 0.6s;
-            z-index: 2;
-        }
-
-        .template-option:hover::after {
-            left: 100%;
-        }
-
-        .template-option.active {
-            border-color: var(--gold);
-            transform: scale(1.12);
-            box-shadow: 0 0 40px rgba(212, 165, 116, 0.6), 0 15px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        input[type="text"] {
-            background-color: rgba(0, 0, 0, 0.6) !important;
-            border: 1px solid rgba(212, 165, 116, 0.25) !important;
-            color: white !important;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        input[type="text"]:focus {
-            background-color: rgba(0, 0, 0, 0.4) !important;
-            border-color: rgba(212, 165, 116, 0.6) !important;
-            box-shadow: 0 0 30px rgba(212, 165, 116, 0.4), inset 0 0 20px rgba(212, 165, 116, 0.1) !important;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(212, 165, 116, 0.05) 100%);
-            border: 1.5px solid rgba(212, 165, 116, 0.35);
-            border-radius: 25px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #d4a574;
-            letter-spacing: 1.5px;
-            animation: glow-pulse-intense 2.5s ease-in-out infinite;
-        }
-
-        header {
-            position: relative;
-            z-index: 20;
-        }
-
-        @media (max-width: 768px) {
-            .canvas-preview { order: -1; }
-        }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطاقة معايدة أعضاء صحيفة الحقيقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #0f172a; color: white; }
+        .editor-card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(15px); border: 2px solid #c5a059; }
+        canvas { border-radius: 15px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); max-width: 100%; height: auto; background: white; }
     </style>
-  <style>body { box-sizing: border-box; }</style>
-  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
- </head>
- <body class="min-h-screen">
-  <canvas id="particleCanvas"></canvas>
-  <header class="w-full py-10 px-6 lg:px-20 flex justify-between items-center text-right">
-   <div class="flex items-center gap-6 flex-row-reverse group">
-    <div class="w-16 h-16 glass-card flex items-center justify-center border-gold/40 shadow-2xl transition-all group-hover:shadow-[0_20px_50px_rgba(212,165,116,0.4)]"><span class="gold-text font-black text-4xl">ح</span>
-    </div>
-    <div class="text-right">
-     <h1 class="text-3xl font-black gold-text tracking-tight transition-all">صحيفة الحقيقة</h1>
-     <p class="text-[10px] text-gray-400 tracking-[0.4em] font-light opacity-70">Al Haqiqa Premium Platform</p>
-    </div>
-   </div><button onclick="toggleAdmin()" class="px-8 py-3 rounded-full text-[10px] font-black border border-white/15 hover:bg-white/8 transition-all duration-500 uppercase tracking-widest text-gray-300 hover:text-gold hover:border-gold/50">Admin Panel</button>
-  </header>
-  <main class="max-w-[1400px] mx-auto px-6 lg:px-20 py-4 grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">
-   <section class="lg:col-span-5 xl:col-span-4 space-y-8">
-    <div class="glass-card p-10 lg:p-12 space-y-8 shadow-2xl border-white/5">
-     <div class="text-right space-y-3">
-      <h2 class="text-3xl font-black gold-text mb-3">بطاقة رمضان الفاخرة</h2>
-      <p class="text-[13px] text-gray-400 font-light leading-relaxed">أنشئ بطاقة تهنئة احترافية بأعلى جودة. تصميم حصري فاخر مع شعار أصلي وتأثيرات متقدمة.</p>
-      <div class="status-badge pt-2">
-       الطبعة الذهبية المحدودة
-      </div>
-     </div>
-     <div class="space-y-8">
-      <div class="text-right space-y-3"><label class="block text-[11px] font-black text-gray-300 uppercase mb-4 tracking-[0.3em]">الاسم المراد ظهوره</label> <input type="text" id="memberName" placeholder="مثال: يوسف الشريف" class="w-full rounded-2xl px-6 py-5 focus:border-gold outline-none transition-all text-white text-lg font-bold shadow-inner text-right" oninput="debouncedDraw()">
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-       <div class="relative text-right space-y-3"><label class="block text-[11px] font-black text-gray-300 uppercase mb-4 tracking-[0.3em]">الصورة الشخصية</label> <input type="file" id="memberPhoto" accept="image/*" class="hidden" onchange="handleImageUpload(event)"> <button onclick="document.getElementById('memberPhoto').click()" class="w-full py-6 glass-card border-2 border-dashed border-white/20 text-[12px] font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 rounded-2xl hover:border-gold/50">
-         <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12"></path>
-         </svg> ارفع صورتك </button>
-       </div>
-       <div class="text-right space-y-3"><label class="block text-[11px] font-black text-gray-300 uppercase mb-4 tracking-[0.3em]">خلفية البطاقة</label>
-        <div class="grid grid-cols-5 gap-3 h-[70px]">
-         <div onclick="updateTemplate('royal', this)" class="template-option active rounded-xl bg-white border border-gray-200 transition-all"></div>
-         <div onclick="updateTemplate('ramadan', this)" class="template-option rounded-xl bg-gradient-to-br from-emerald-900 to-emerald-700"></div>
-         <div onclick="updateTemplate('night', this)" class="template-option rounded-xl bg-gradient-to-br from-indigo-950 to-indigo-900"></div>
-         <div onclick="updateTemplate('press', this)" class="template-option rounded-xl bg-gradient-to-br from-slate-950 to-slate-800"></div>
-         <div onclick="updateTemplate('gold', this)" class="template-option rounded-xl bg-gradient-to-br from-yellow-600 to-amber-700"></div>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="editor-card p-8 rounded-3xl space-y-6 order-2 lg:order-1">
+            <h2 class="text-2xl font-black text-[#c5a059] text-center">معايدة أعضاء الصحيفة</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">ارفع الخلفية (القماشية البيضاء)</label>
+                    <input type="file" id="bgIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-blue-600 file:text-white rounded-lg cursor-pointer" onchange="loadBg(event)">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">شعار الصحيفة</label>
+                    <input type="file" id="logoIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-red-600 file:text-white rounded-lg cursor-pointer" onchange="loadLogo(event)">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">صورتك الشخصية</label>
+                    <input type="file" id="userIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-[#c5a059] file:text-black rounded-lg cursor-pointer" onchange="loadUser(event)">
+                </div>
+                <input type="text" id="nameIn" placeholder="اسمك الكامل" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-[#c5a059]" oninput="draw()">
+                
+                <select id="greetingIn" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-[#c5a059]" onchange="draw()">
+                    <option value="نهنئكم بحلول عيد الفطر المبارك">نهنئكم بحلول عيد الفطر المبارك</option>
+                    <option value="نبارك لكم العيد.. وكل عام وأنتم بخير">نبارك لكم العيد.. وكل عام وأنتم بخير</option>
+                    <option value="أسرة صحيفة الحقيقة تهنئكم بالعيد">أسرة صحيفة الحقيقة تهنئكم بالعيد</option>
+                </select>
+            </div>
+
+            <button onclick="download()" class="w-full bg-[#c5a059] text-black font-black py-5 rounded-2xl text-xl hover:bg-amber-600 shadow-xl">تحميل البطاقة النهائية</button>
         </div>
-       </div>
-      </div>
-     </div>
-     <div class="pt-8 border-t border-white/10"><button id="downloadBtn" onclick="processAndDownload()" class="download-btn w-full text-[14px] font-black py-7 rounded-3xl flex items-center justify-center gap-4 group"> <span>اعتماد وتحميل البطاقة</span>
-       <svg class="w-6 h-6 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-       </svg></button>
-      <div class="text-center space-y-2 mt-6">
-       <p id="statusMsg" class="text-[11px] text-gray-400 font-light tracking-wide uppercase">جاهز للتحميل بدقة 1080×1620 بجودة عالية</p>
-       <p class="text-[10px] text-gray-600 font-light">الملف سيُحفظ بصيغة PNG عالية الجودة</p>
-      </div>
-     </div>
+
+        <div class="flex justify-center order-1 lg:order-2">
+            <canvas id="card" width="1000" height="1428"></canvas>
+        </div>
     </div>
-   </section>
-   <section class="lg:col-span-7 xl:col-span-8 flex flex-col items-center canvas-preview">
-    <div class="relative group w-full max-w-[550px]">
-     <div class="absolute -inset-3 bg-gradient-to-r from-gold/10 via-gold/5 to-gold/10 blur-3xl opacity-60 rounded-[50px]"></div>
-     <div class="relative bg-transparent overflow-hidden rounded-[45px] shadow-[0_60px_120px_-20px_rgba(212,165,116,0.3)] border border-white/5">
-      <canvas id="mainCanvas" width="1080" height="1620" class="w-full h-auto block bg-white"></canvas>
-     </div>
-    </div>
-   </section>
-  </main>
-  <div id="adminPanel" class="fixed inset-0 bg-black/99 z-[100] hidden flex items-center justify-center p-6 backdrop-blur-3xl">
-   <div class="glass-card max-w-2xl w-full p-12 space-y-8 border-gold/15 text-right">
-    <div class="flex justify-between items-center border-b border-white/15 pb-8"><button onclick="toggleAdmin()" class="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-all hover:text-gold font-bold text-lg">✕</button>
-     <div>
-      <h3 class="text-3xl font-black gold-text">سجلات النظام</h3>
-      <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-widest">Operation Audit Logs</p>
-     </div>
-    </div>
-    <div class="bg-black/50 p-8 rounded-3xl max-h-[400px] overflow-y-auto" id="logsList"></div>
-   </div>
-  </div>
-  <script>
-        const LOGO_BASE64 = "data:image/png;base64,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";
 
-        const pCanvas = document.getElementById('particleCanvas');
-        const pCtx = pCanvas.getContext('2d');
-        let stars = [];
-
-        function initStars() {
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<120; i++) {
-                stars.push({
-                    x: Math.random() * pCanvas.width,
-                    y: Math.random() * pCanvas.height,
-                    size: Math.random() * 2.5,
-                    opacity: Math.random() * 0.7,
-                    speed: Math.random() * 0.008 + 0.002
-                });
-            }
-        }
-
-        function animateStars() {
-            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-            stars.forEach(s => {
-                s.opacity += s.speed;
-                if(s.opacity > 1 || s.opacity < 0) s.speed *= -1;
-                pCtx.fillStyle = `rgba(212, 165, 116, ${s.opacity * 0.6})`;
-                pCtx.beginPath();
-                pCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                pCtx.fill();
-            });
-            requestAnimationFrame(animateStars);
-        }
-
-        const canvas = document.getElementById('mainCanvas');
+    <script>
+        const canvas = document.getElementById('card');
         const ctx = canvas.getContext('2d');
-        
-        const config = {
-            currentTemplate: 'royal',
-            userImg: null,
-            logoImg: new Image(),
-            templates: {
-                royal: { bg: '#ffffff', accent: '#d4a574', text: '#8b4513', secondary: '#555555' },
-                ramadan: { bg: 'linear(90deg, #064e3b 0%, #047857 100%)', accent: '#fbbf24', text: '#ffffff', secondary: '#a7f3d0' },
-                night: { bg: 'linear(90deg, #1e1b4b 0%, #312e81 100%)', accent: '#818cf8', text: '#ffffff', secondary: '#c7d2fe' },
-                press: { bg: 'linear(90deg, #0f172a 0%, #1e293b 100%)', accent: '#3b82f6', text: '#ffffff', secondary: '#94a3b8' },
-                gold: { bg: 'linear(90deg, #d4a574 0%, #c5865e 100%)', accent: '#ffffff', text: '#2d1810', secondary: '#f5f5f5' }
+        let bgImg = null, logoImg = null, userImg = null;
+
+        function loadBg(e) {
+            const r = new FileReader();
+            r.onload = (ev) => { bgImg = new Image(); bgImg.onload = draw; bgImg.src = ev.target.result; };
+            r.readAsDataURL(e.target.files[0]);
+        }
+        function loadLogo(e) {
+            const r = new FileReader();
+            r.onload = (ev) => { logoImg = new Image(); logoImg.onload = draw; logoImg.src = ev.target.result; };
+            r.readAsDataURL(e.target.files[0]);
+        }
+        function loadUser(e) {
+            const r = new FileReader();
+            r.onload = (ev) => { userImg = new Image(); userImg.onload = draw; userImg.src = ev.target.result; };
+            r.readAsDataURL(e.target.files[0]);
+        }
+
+        function draw() {
+            const w = canvas.width, h = canvas.height;
+            const name = document.getElementById('nameIn').value || "يوسف العاتي";
+            const greeting = document.getElementById('greetingIn').value;
+
+            // 1. الخلفية
+            if (bgImg) ctx.drawImage(bgImg, 0, 0, w, h);
+            else { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+
+            // 2. الشعار
+            if (logoImg) {
+                const lw = 280; const aspect = logoImg.width / logoImg.height;
+                ctx.drawImage(logoImg, w - lw - 50, 50, lw, lw / aspect);
             }
-        };
 
-        config.logoImg.src = LOGO_BASE64;
-        config.logoImg.onload = () => drawCard();
+            // 3. صورة العضو
+            const cx = w/2, cy = 480, r = 200;
+            ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+            if(userImg) ctx.drawImage(userImg, cx - r, cy - r, r*2, r*2);
+            else { ctx.fillStyle = "#eee"; ctx.fill(); }
+            ctx.restore();
+            ctx.strokeStyle = "#c5a059"; ctx.lineWidth = 10; ctx.stroke();
 
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                const img = new Image();
-                img.onload = () => { config.userImg = img; drawCard(); };
-                img.src = ev.target.result;
+            // 4. نصوص التهنئة
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#1e3a5f";
+            ctx.font = "900 100px 'Cairo'";
+            ctx.fillText("عيدكم مبارك", w/2, 850);
+
+            ctx.font = "700 40px 'Cairo'";
+            ctx.fillText(greeting, w/2, 950);
+            ctx.font = "400 30px 'Cairo'";
+            ctx.fillText("وكل عام وأنتم بخير", w/2, 1020);
+
+            // 5. شريط اسم العضو في الأسفل
+            ctx.fillStyle = "#c5a059";
+            const bw = 600, bh = 120;
+            ctx.beginPath(); ctx.roundRect(w/2 - bw/2, 1150, bw, bh, 60); ctx.fill();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 50px 'Cairo'";
+            ctx.fillText(name, w/2, 1230);
+        }
+
+        function download() {
+            const l = document.createElement('a');
+            l.download = 'Eid_Haqiqa_Card.png';
+            l.href = canvas.toDataURL('image/png', 1.0);
+            l.click();
+        }
+
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+                this.beginPath(); this.moveTo(x + r, y);
+                this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r);
+                this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r);
+                this.closePath(); return this;
             };
-            reader.readAsDataURL(file);
         }
-
-        async function drawCard() {
-            const w = canvas.width;
-            const h = canvas.height;
-            const t = config.templates[config.currentTemplate];
-            const name = document.getElementById('memberName').value.trim() || "عضو أسرة التحرير";
-
-            ctx.clearRect(0, 0, w, h);
-
-            // الخلفية
-            if(t.bg.includes('linear')) {
-                const gradient = ctx.createLinearGradient(0, 0, w, h);
-                const colors = t.bg.match(/#[a-f0-9]{6}/gi);
-                if(colors) {
-                    colors.forEach((c, i) => gradient.addColorStop(i / (colors.length - 1), c));
-                    ctx.fillStyle = gradient;
-                }
-            } else {
-                ctx.fillStyle = t.bg;
-            }
-            ctx.fillRect(0, 0, w, h);
-
-            // الشريط العلوي الذهبي
-            const gradient = ctx.createLinearGradient(0, 0, 0, 240);
-            gradient.addColorStop(0, 'rgba(212, 165, 116, 0.9)');
-            gradient.addColorStop(1, 'rgba(139, 111, 71, 0.7)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(w/2 - 50, 0, 100, 240);
-
-            // جسم البطاقة
-            const margin = 80;
-            const cardW = w - (margin * 2);
-            const cardH = h - 350;
-            const cardY = 280;
-
-            ctx.save();
-            ctx.fillStyle = config.currentTemplate === 'royal' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)';
-            ctx.shadowBlur = 50;
-            ctx.shadowColor = "rgba(0, 0, 0, 0.25)";
-            ctx.beginPath();
-            ctx.roundRect(margin, cardY, cardW, cardH, 50);
-            ctx.fill();
-            if(config.currentTemplate === 'royal') {
-                ctx.strokeStyle = '#e8c4a0';
-                ctx.lineWidth = 3;
-                ctx.stroke();
-            }
-            ctx.restore();
-
-            // الشعار
-            const logoW = 220;
-            const logoH = 220;
-            ctx.save();
-            ctx.shadowBlur = 30;
-            ctx.shadowColor = "rgba(212, 165, 116, 0.3)";
-            ctx.drawImage(config.logoImg, w/2 - logoW/2, cardY + 50, logoW, logoH);
-            ctx.restore();
-
-            // النصوص الرئيسية
-            ctx.textAlign = 'center';
-            ctx.fillStyle = t.text;
-            ctx.font = 'bold 95px "Tajawal"';
-            ctx.fillText("رمضان مبارك", w/2, cardY + 430);
-
-            ctx.font = '400 48px "Cairo"';
-            ctx.fillStyle = t.secondary;
-            ctx.fillText("تهنئكم صحيفة الحقيقة الإلكترونية", w/2, cardY + 520);
-            ctx.fillText("بحلول شهر رمضان المبارك", w/2, cardY + 590);
-
-            // الصورة الشخصية
-            const imgSize = 380;
-            const imgY = cardY + 680;
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(w/2, imgY + imgSize/2, imgSize/2, 0, Math.PI * 2);
-            ctx.clip();
-            if(config.userImg) {
-                ctx.drawImage(config.userImg, w/2 - imgSize/2, imgY, imgSize, imgSize);
-            } else {
-                ctx.fillStyle = '#f0f0f0';
-                ctx.fillRect(w/2 - imgSize/2, imgY, imgSize, imgSize);
-                ctx.fillStyle = '#ccc';
-                ctx.font = '150px "Cairo"';
-                ctx.fillText("👤", w/2, imgY + imgSize/2 + 50);
-            }
-            ctx.restore();
-            ctx.strokeStyle = t.accent;
-            ctx.lineWidth = 15;
-            ctx.stroke();
-
-            // صندوق الاسم الفاخر
-            const boxW = cardW - 180;
-            const boxY = cardY + 1120;
-            ctx.fillStyle = t.accent;
-            ctx.beginPath();
-            ctx.roundRect(w/2 - boxW/2, boxY, boxW, 160, 30);
-            ctx.fill();
-
-            ctx.fillStyle = config.currentTemplate === 'gold' ? '#2d1810' : '#ffffff';
-            ctx.font = '900 75px "Cairo"';
-            ctx.fillText(name, w/2, boxY + 110);
-
-            // التذييل الفاخر
-        }
-
-        async function processAndDownload() {
-            const name = document.getElementById('memberName').value.trim() || "أسرة_الحقيقة";
-            const btn = document.getElementById('downloadBtn');
-            const status = document.getElementById('statusMsg');
-
-            btn.disabled = true;
-            status.innerText = "جاري معالجة الصورة...";
-
-            try {
-                await drawCard();
-                const image = canvas.toDataURL("image/png", 1.0);
-                
-                const link = document.createElement('a');
-                link.style.display = 'none';
-                link.href = image;
-                link.download = `Alhaqiqa_${name}_Ramadan_Premium.png`;
-                
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    status.innerText = "✓ تم التحميل بنجاح!";
-                }, 100);
-
-                const logs = JSON.parse(localStorage.getItem('haqiqa_logs') || '[]');
-                logs.push({ name, time: new Date().toLocaleString('ar-EG'), template: config.currentTemplate });
-                localStorage.setItem('haqiqa_logs', JSON.stringify(logs));
-
-            } catch (err) {
-                console.error(err);
-                status.innerText = "حدث خطأ - جرب متصفح آخر";
-            } finally {
-                setTimeout(() => {
-                    btn.disabled = false;
-                    status.innerText = "جاهز للتحميل بدقة 1080×1620 بجودة عالية";
-                }, 2000);
-            }
-        }
-
-        function updateTemplate(id, el) {
-            config.currentTemplate = id;
-            document.querySelectorAll('.template-option').forEach(o => o.classList.remove('active'));
-            el.classList.add('active');
-            drawCard();
-        }
-
-        function toggleAdmin() {
-            const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('hidden');
-            if(!panel.classList.contains('hidden')) {
-                const logs = JSON.parse(localStorage.getItem('haqiqa_logs') || '[]');
-                document.getElementById('logsList').innerHTML = logs.length ? logs.reverse().map(l => `
-                    <div class="flex justify-between items-center py-5 border-b border-white/10 last:border-b-0">
-                        <span class="text-[10px] text-gray-500 font-light">${l.time}</span>
-                        <span class="text-gold font-bold text-sm">${l.name}</span>
-                    </div>`).join('') : '<p class="text-center py-12 text-gray-600">لا توجد سجلات</p>';
-            }
-        }
-
-        let timer;
-        function debouncedDraw() {
-            clearTimeout(timer);
-            timer = setTimeout(drawCard, 50);
-        }
-
-        initStars();
-        animateStars();
-        window.addEventListener('resize', initStars);
-        window.onload = () => setTimeout(drawCard, 500);
+        draw();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cdaa32e746eacfb',t:'MTc3MTA1MTg5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
