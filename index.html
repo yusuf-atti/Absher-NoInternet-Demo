@@ -3,132 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطاقة معايدة أعضاء صحيفة الحقيقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>منصة تهاني عيد الأضحى | صحيفة الحقيقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #0f172a; color: white; }
-        .editor-card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(15px); border: 2px solid #c5a059; }
-        canvas { border-radius: 15px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); max-width: 100%; height: auto; background: white; }
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            color: white; 
+            background: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.92)), 
+                        url('https://alhqyq.com/contents/newsm/25001_0.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .editor-card { 
+            background: rgba(30, 41, 59, 0.75); 
+            backdrop-filter: blur(20px); 
+            border: 2px solid #c5a059; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        canvas { 
+            border-radius: 20px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); 
+            max-width: 100%; 
+            height: auto;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+        }
     </style>
 </head>
-<body class="min-h-screen py-10 px-4">
+<body class="py-10 px-4">
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        
+        <!-- لوحة التحكم -->
         <div class="editor-card p-8 rounded-3xl space-y-6 order-2 lg:order-1">
-            <h2 class="text-2xl font-black text-[#c5a059] text-center">معايدة أعضاء الصحيفة</h2>
+            <div class="text-center border-b border-gray-600 pb-4">
+                <h1 class="text-2xl font-black text-[#c5a059]">بطاقات معايدة صحيفة الحقيقة</h1>
+                <p class="text-gray-300 text-sm mt-1">أدخل الاسم لتجهيز التهنئة الرسمية</p>
+            </div>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">ارفع الخلفية (القماشية البيضاء)</label>
-                    <input type="file" id="bgIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-blue-600 file:text-white rounded-lg cursor-pointer" onchange="loadBg(event)">
+                    <label class="block text-sm text-gray-200 mb-2 font-bold text-right">اسم عضو الصحيفة</label>
+                    <input type="text" id="nameIn" placeholder="اكتب اسمك هنا..." 
+                        class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 outline-none focus:border-[#c5a059] text-white font-bold text-center" oninput="drawCard()">
                 </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">شعار الصحيفة</label>
-                    <input type="file" id="logoIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-red-600 file:text-white rounded-lg cursor-pointer" onchange="loadLogo(event)">
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">صورتك الشخصية</label>
-                    <input type="file" id="userIn" accept="image/*" class="w-full text-sm text-slate-400 file:bg-[#c5a059] file:text-black rounded-lg cursor-pointer" onchange="loadUser(event)">
-                </div>
-                <input type="text" id="nameIn" placeholder="اسمك الكامل" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-[#c5a059]" oninput="draw()">
-                
-                <select id="greetingIn" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-[#c5a059]" onchange="draw()">
-                    <option value="نهنئكم بحلول عيد الفطر المبارك">نهنئكم بحلول عيد الفطر المبارك</option>
-                    <option value="نبارك لكم العيد.. وكل عام وأنتم بخير">نبارك لكم العيد.. وكل عام وأنتم بخير</option>
-                    <option value="أسرة صحيفة الحقيقة تهنئكم بالعيد">أسرة صحيفة الحقيقة تهنئكم بالعيد</option>
-                </select>
             </div>
 
-            <button onclick="download()" class="w-full bg-[#c5a059] text-black font-black py-5 rounded-2xl text-xl hover:bg-amber-600 shadow-xl">تحميل البطاقة النهائية</button>
+            <button onclick="downloadCard()" class="w-full bg-gradient-to-r from-amber-600 to-amber-400 text-slate-900 font-black py-5 rounded-2xl text-xl hover:scale-[1.01] transition-all shadow-xl flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>تحميل البطاقة الرسمية</span>
+            </button>
         </div>
 
+        <!-- معاينة البطاقة -->
         <div class="flex justify-center order-1 lg:order-2">
-            <canvas id="card" width="1000" height="1428"></canvas>
+            <canvas id="cardCanvas" width="1000" height="1778"></canvas>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('card');
+        const canvas = document.getElementById('cardCanvas');
         const ctx = canvas.getContext('2d');
-        let bgImg = null, logoImg = null, userImg = null;
+        
+        const bgImg = new Image();
+        // استخدام بروكسي لتفادي حظر الصورة وظهورها باللون الأبيض
+        bgImg.crossOrigin = "anonymous"; 
+        bgImg.src = 'https://images.weserv.nl/?url=alhqyq.com/contents/newsm/25001_0.jpg';
 
-        function loadBg(e) {
-            const r = new FileReader();
-            r.onload = (ev) => { bgImg = new Image(); bgImg.onload = draw; bgImg.src = ev.target.result; };
-            r.readAsDataURL(e.target.files[0]);
-        }
-        function loadLogo(e) {
-            const r = new FileReader();
-            r.onload = (ev) => { logoImg = new Image(); logoImg.onload = draw; logoImg.src = ev.target.result; };
-            r.readAsDataURL(e.target.files[0]);
-        }
-        function loadUser(e) {
-            const r = new FileReader();
-            r.onload = (ev) => { userImg = new Image(); userImg.onload = draw; userImg.src = ev.target.result; };
-            r.readAsDataURL(e.target.files[0]);
-        }
+        bgImg.onload = () => {
+            drawCard();
+        };
 
-        function draw() {
-            const w = canvas.width, h = canvas.height;
-            const name = document.getElementById('nameIn').value || "الاسم";
-            const greeting = document.getElementById('greetingIn').value;
+        function drawCard() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const name = document.getElementById('nameIn').value.trim() || "اسم العضو";
 
-            // 1. الخلفية
-            if (bgImg) ctx.drawImage(bgImg, 0, 0, w, h);
-            else { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+            // مسح الكانفاس
+            ctx.clearRect(0, 0, w, h);
 
-            // 2. الشعار
-            if (logoImg) {
-                const lw = 280; const aspect = logoImg.width / logoImg.height;
-                ctx.drawImage(logoImg, w - lw - 50, 50, lw, lw / aspect);
+            // 1. رسم الصورة الخلفية
+            if (bgImg.complete) {
+                ctx.drawImage(bgImg, 0, 0, w, h);
             }
 
-            // 3. صورة العضو
-            const cx = w/2, cy = 480, r = 200;
-            ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
-            if(userImg) ctx.drawImage(userImg, cx - r, cy - r, r*2, r*2);
-            else { ctx.fillStyle = "#eee"; ctx.fill(); }
-            ctx.restore();
-            ctx.strokeStyle = "#c5a059"; ctx.lineWidth = 10; ctx.stroke();
-
-            // 4. نصوص التهنئة
+            // 2. إعدادات النص (تصغير الخط)
             ctx.textAlign = "center";
-            ctx.fillStyle = "#1e3a5f";
-            ctx.font = "900 100px 'Cairo'";
-            ctx.fillText("عيدكم مبارك", w/2, 850);
+            ctx.fillStyle = "#112233"; 
+            ctx.font = "bold 45px 'Cairo'"; 
 
-            ctx.font = "700 40px 'Cairo'";
-            ctx.fillText(greeting, w/2, 950);
-            ctx.font = "400 30px 'Cairo'";
-            ctx.fillText("وكل عام وأنتم بخير", w/2, 1020);
+            // 3. تحديد الموقع: تم إنزاله بمقدار 40 بكسل (حوالي 1 سم) عن الموضع السابق
+            const textX = w / 2;
+            const textY = h - 380; 
 
-            // 5. شريط اسم العضو في الأسفل
-            ctx.fillStyle = "#c5a059";
-            const bw = 600, bh = 120;
-            ctx.beginPath(); ctx.roundRect(w/2 - bw/2, 1150, bw, bh, 60); ctx.fill();
-
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 50px 'Cairo'";
-            ctx.fillText(name, w/2, 1230);
+            // 4. كتابة الاسم
+            ctx.fillText(name, textX, textY);
         }
 
-        function download() {
-            const l = document.createElement('a');
-            l.download = 'Eid_Haqiqa_Card.png';
-            l.href = canvas.toDataURL('image/png', 1.0);
-            l.click();
+        function downloadCard() {
+            const nameInput = document.getElementById('nameIn').value.trim();
+            const fileName = nameInput ? `AlHaqiqa_${nameInput}.png` : "Eid_Card.png";
+            
+            drawCard();
+            
+            try {
+                const dataURL = canvas.toDataURL('image/png', 1.0);
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = dataURL;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (e) {
+                alert("يرجى الضغط مطولاً على الصورة لحفظها إذا لم يبدأ التحميل.");
+            }
         }
-
-        if (!CanvasRenderingContext2D.prototype.roundRect) {
-            CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-                this.beginPath(); this.moveTo(x + r, y);
-                this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r);
-                this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r);
-                this.closePath(); return this;
-            };
-        }
-        draw();
     </script>
 </body>
 </html>
